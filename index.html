@@ -108,6 +108,7 @@ input,select{font-family:inherit}
 .icon-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:var(--accent-ink);width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:15px;transition:transform .15s ease,background .2s ease}
 .icon-btn:active{transform:scale(.92);background:rgba(255,255,255,.3)}
 .icon-btn.spinning{animation:spin .8s linear infinite}
+.icon-btn.err{box-shadow:0 0 0 2px var(--boros)}
 @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 .profile-chip{
   background:rgba(255,255,255,.18);color:var(--accent-ink);
@@ -130,7 +131,7 @@ main.content{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;min-
   position:fixed;
   right:calc(16px + env(safe-area-inset-right,0px));
   bottom:calc(72px + env(safe-area-inset-bottom,0px));
-  height:0;overflow:visible;pointer-events:none;display:flex;justify-content:flex-end;z-index:20;
+  overflow:visible;pointer-events:none;display:flex;justify-content:flex-end;z-index:20;
 }
 
 section[data-tab]{display:flex;flex-direction:column;gap:16px;opacity:0;transform:translateY(6px);transition:opacity .26s ease,transform .26s ease}
@@ -233,6 +234,17 @@ section[data-tab][hidden]{display:none}
 .month-chip.now::after{content:"•";margin-left:4px}
 
 /* ---- Tracker ---- */
+.bars{display:flex;gap:10px;align-items:flex-end;justify-content:space-around;padding:10px 4px 0}
+.bar-col{flex:1 1 0;min-width:0;max-width:72px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar-area{position:relative;width:100%}
+.bar-zero{position:absolute;left:0;right:0;height:1px;background:var(--border)}
+.bar{position:absolute;left:18%;right:18%;border-radius:6px}
+.bar.pos{background:var(--aman)}
+.bar.neg{background:var(--boros)}
+.bar.run{background:var(--ink-dim);opacity:.7}
+.bar-col.now .bar-lbl{color:var(--accent);font-weight:700}
+.bar-val{font-size:11px;font-weight:700;font-family:var(--font-display)}
+.bar-lbl{font-size:11px;color:var(--ink-dim)}
 .tracker-card{display:flex;flex-direction:column;gap:10px}
 .tracker-top{display:flex;align-items:center;justify-content:space-between}
 .tracker-month{font-weight:700;font-size:14px;font-family:var(--font-display)}
@@ -242,6 +254,7 @@ section[data-tab][hidden]{display:none}
 .status-pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px}
 .status-pill.Untung{background:color-mix(in srgb, var(--aman) 16%, transparent);color:var(--aman)}
 .status-pill.Rugi{background:color-mix(in srgb, var(--boros) 16%, transparent);color:var(--boros)}
+.status-pill.Berjalan{background:var(--info-soft);color:var(--info)}
 .status-pill.Impas{background:var(--surface-2);color:var(--ink-dim)}
 .status-pill.dash{background:var(--surface-2);color:var(--ink-dim)}
 
@@ -267,6 +280,16 @@ section[data-tab][hidden]{display:none}
   border-radius:11px;padding:10px 12px;font-size:14px;width:100%;transition:border-color .2s ease;
 }
 .field input:focus,.field select:focus{outline:2px solid var(--pc-accent, var(--accent));outline-offset:1px}
+/* input tanggal: samain lebar & rata kiri di HP (iOS/Android) */
+.field input[type="date"]{
+  -webkit-appearance:none;appearance:none;display:block;box-sizing:border-box;
+  width:100%;min-width:0;max-width:100%;min-height:42px;text-align:left;font-family:inherit;
+}
+.field input[type="date"]::-webkit-date-and-time-value{text-align:left;margin:0;padding:0;min-height:1.2em}
+.field input[type="date"]::-webkit-datetime-edit{padding:0}
+.field input[type="date"]::-webkit-calendar-picker-indicator{margin:0}
+.set-pill{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--surface-2);color:var(--ink-dim)}
+.set-pill.ok{background:color-mix(in srgb, var(--aman) 16%, transparent);color:var(--aman)}
 .kategori-edit-row{display:flex;align-items:center;gap:10px}
 .kategori-edit-row input{width:68px;text-align:right}
 .percent-total{font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:6px}
@@ -374,16 +397,15 @@ section[data-tab][hidden]{display:none}
 
       <section data-tab="tracker" id="tab-tracker" hidden>
         <div class="card">
-          <div class="section-title"><span>Tren Saldo Akhir</span><span>Okt 2026 – Des 2027</span></div>
+          <div class="section-title"><span>Sisa per Bulan</span><span>pemasukan − pengeluaran</span></div>
           <div class="chart-wrap" id="trackerChart"></div>
         </div>
         <div id="trackerList" style="display:flex;flex-direction:column;gap:10px"></div>
       </section>
 
       <section data-tab="setup" id="tab-setup" hidden>
-        <p class="hint">Dua profil — persentase masing-masing keliatan di sini biar bisa saling bandingin. Defaultnya sama (25/25/30/15/5), edit sesuai kebutuhan masing-masing.</p>
+        <div class="month-scroller" id="setupMonthScroller"></div>
         <div id="peopleCards" style="display:flex;flex-direction:column;gap:14px"></div>
-        <div class="disclaimer">Demo ini nyimpen data di browser/device masing-masing (localStorage) — <b>belum ada sinkronisasi antar HP</b>. Kalau Dduy &amp; Acaa buka link ini dari HP masing-masing, datanya KEPISAH, bukan ke-share otomatis. Biar beneran nyambung, butuh backend (lihat catatan di chat).</div>
       </section>
 
     </div>
@@ -443,62 +465,127 @@ section[data-tab][hidden]{display:none}
   var SYNC_URL = 'https://script.google.com/macros/s/AKfycby3TE8muRK-zYu5k63d6-rui58LF8JZptl0DRjLnK6VRumC-c6QU8gB5ORqsWzfmTyZ/exec';
   var SYNC_TOKEN = 'canduysakses987';
   var syncing = false;
+  var syncFailed = false;
+  var syncRunning = false, syncAgain = false;
 
-  function syncPush(personKey){
-    if(!SYNC_URL) return;
-    var key = personKey || state.activePerson;
-    fetch(SYNC_URL, {
-      method:'POST',
-      headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify({ token: SYNC_TOKEN, action:'savePerson', person: key, data: state.people[key] })
-    }).catch(function(){ /* diem-diem gagal, data tetep aman di localStorage */ });
+  function clone(o){ return JSON.parse(JSON.stringify(o)); }
+  function pad2(n){ return (n<10?'0':'')+n; }
+  /* tanggal LOKAL (bukan UTC) — biar jam 00:00–06:59 WIB gak mundur sehari */
+  function localISO(d){ return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate()); }
+  function todayISO(){ return localISO(new Date()); }
+  function nowTs(){ return new Date().toISOString(); }
+  function ymKey(y,m){ return y+'-'+pad2(m+1); }
+
+  function freshPerson(){
+    return {
+      saldoAwal: 0,
+      tanggalAwal: todayISO(),
+      persen: clone(DEFAULT_PERSEN),
+      persenBulan: {},      // {'2026-11': {kewajiban,..., ts}} — target % per bulan
+      scalarsAt: '',        // kapan saldoAwal/tanggalAwal/persen terakhir diedit (buat rebutan antar HP)
+      deleted: {},          // {id: waktuHapus} — biar entri yang dihapus gak "hidup lagi" pas sync
+      pemasukan: [],
+      pengeluaran: []
+    };
   }
-  function syncPull(cb){
-    if(!SYNC_URL){ if(cb) cb(false); return; }
-    syncing = true; updateSyncBtn();
-    fetch(SYNC_URL+'?token='+encodeURIComponent(SYNC_TOKEN))
-      .then(function(r){ return r.json(); })
-      .then(function(remote){
-        if(remote && remote.people){
-          ['dduy','acaa'].forEach(function(k){
-            if(remote.people[k]) state.people[k] = remote.people[k];
-          });
-          try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
-        }
-      })
-      .catch(function(){ /* offline/gagal, pakai data terakhir yang ada */ })
-      .then(function(){ syncing = false; updateSyncBtn(); if(cb) cb(true); });
+  function normPerson(p){
+    var n = Object.assign(freshPerson(), p||{});
+    n.persen = Object.assign(clone(DEFAULT_PERSEN), n.persen||{});
+    n.persenBulan = n.persenBulan || {};
+    n.deleted = n.deleted || {};
+    n.scalarsAt = n.scalarsAt || '';
+    // buang data demo lama (seed*) biar gak nyusup balik ke Sheet
+    n.pemasukan = (n.pemasukan||[]).filter(function(e){ return e && e.id && !/^seed/.test(e.id); });
+    n.pengeluaran = (n.pengeluaran||[]).filter(function(e){ return e && e.id; });
+    return n;
   }
+
+  /* Gabungin 2 versi data 1 orang (a = lokal, b = Sheet). Entri digabung per id, TIDAK ditimpa. */
+  function mergePerson(a, b){
+    a = normPerson(a); b = normPerson(b);
+    var out = {};
+    // nilai tunggal: yang paling baru diedit menang; kalau sama-sama belum pernah diedit, ikut Sheet
+    var base = (a.scalarsAt > b.scalarsAt) ? a : b;
+    out.saldoAwal = base.saldoAwal; out.tanggalAwal = base.tanggalAwal;
+    out.persen = base.persen; out.scalarsAt = base.scalarsAt;
+    // tombstone: gabung, buang yang udah > 180 hari
+    var cutoff = new Date(Date.now()-180*86400000).toISOString();
+    out.deleted = {};
+    [b.deleted, a.deleted].forEach(function(d){ Object.keys(d).forEach(function(id){ if(d[id] >= cutoff) out.deleted[id] = d[id]; }); });
+    ['pemasukan','pengeluaran'].forEach(function(k){
+      var map = {};
+      b[k].concat(a[k]).forEach(function(e){ map[e.id] = e; });
+      out[k] = Object.keys(map).map(function(id){ return map[id]; }).filter(function(e){ return !out.deleted[e.id]; });
+    });
+    // persen per bulan: per bulan, yang ts-nya lebih baru menang
+    out.persenBulan = {};
+    var keys = {}; Object.keys(a.persenBulan).concat(Object.keys(b.persenBulan)).forEach(function(k){ keys[k]=1; });
+    Object.keys(keys).forEach(function(k){
+      var pa = a.persenBulan[k], pb = b.persenBulan[k];
+      if(pa && pb) out.persenBulan[k] = ((pa.ts||'') > (pb.ts||'')) ? pa : pb;
+      else out.persenBulan[k] = pa || pb;
+    });
+    return out;
+  }
+  /* "sidik jari" isi data — buat tau apakah versi gabungan beda dari yang ada di Sheet */
+  function sig(p){
+    p = normPerson(p);
+    var ids = function(arr){ return arr.map(function(e){return e.id;}).sort().join(','); };
+    var pb = Object.keys(p.persenBulan).sort().map(function(k){ return k+'@'+(p.persenBulan[k].ts||''); }).join(',');
+    return [ids(p.pemasukan), ids(p.pengeluaran), Object.keys(p.deleted).sort().join(','), p.scalarsAt, pb].join('|');
+  }
+
   function updateSyncBtn(){
     var btn = document.getElementById('syncBtn');
     if(!btn) return;
     btn.style.display = SYNC_URL ? 'flex' : 'none';
     btn.classList.toggle('spinning', syncing);
+    btn.classList.toggle('err', syncFailed && !syncing);
+    btn.title = syncFailed ? 'Sync gagal — data aman di HP ini, dicoba lagi otomatis' : 'Refresh data pasangan';
+  }
+  function userIsTyping(){
+    var a = document.activeElement;
+    return !!(a && /^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName));
   }
 
-  function clone(o){ return JSON.parse(JSON.stringify(o)); }
-  function todayISO(){ return new Date().toISOString().slice(0,10); }
-
-  function freshPerson(seedIncome){
-    return {
-      saldoAwal: 0,
-      tanggalAwal: todayISO(),
-      persen: clone(DEFAULT_PERSEN),
-      pemasukan: seedIncome ? clone(seedIncome) : [],
-      pengeluaran: []
+  /* 1 fungsi sync buat semua: ambil Sheet -> gabung dengan data lokal -> kirim balik kalau ada yang baru */
+  function syncAll(cb){
+    if(!SYNC_URL){ if(cb) cb(false); return; }
+    if(syncRunning){ syncAgain = true; if(cb) cb(false); return; }
+    syncRunning = true; syncing = true; updateSyncBtn();
+    var finish = function(ok){
+      syncRunning = false; syncing = false; syncFailed = !ok; updateSyncBtn();
+      if(syncAgain){ syncAgain = false; setTimeout(function(){ syncAll(function(){ if(!userIsTyping()) renderAll(); }); }, 50); }
+      if(cb) cb(ok);
     };
+    fetch(SYNC_URL+'?token='+encodeURIComponent(SYNC_TOKEN))
+      .then(function(r){ return r.json(); })
+      .then(function(remote){
+        if(!remote || !remote.people) throw new Error('bad remote');
+        var toPush = [];
+        ['dduy','acaa'].forEach(function(k){
+          var rem = remote.people[k] ? normPerson(remote.people[k]) : null;
+          var merged = rem ? mergePerson(state.people[k], rem) : normPerson(state.people[k]);
+          if(!rem || sig(merged) !== sig(rem)) toPush.push(k);
+          state.people[k] = merged;
+        });
+        saveLocalOnly();
+        return Promise.all(toPush.map(function(k){
+          return fetch(SYNC_URL, {
+            method:'POST', keepalive:true,
+            headers:{'Content-Type':'text/plain;charset=utf-8'},
+            body: JSON.stringify({ token: SYNC_TOKEN, action:'savePerson', person: k, data: state.people[k] })
+          }).then(function(r){ return r.json(); }).then(function(j){ if(!j || !j.ok) throw new Error('push gagal'); });
+        }));
+      })
+      .then(function(){ finish(true); }, function(){ finish(false); });
   }
+  /* dipanggil tiap habis nambah/hapus/ubah data */
+  function syncPush(){ syncAll(function(){ if(!userIsTyping()) renderAll(); }); }
+  function syncPull(cb){ syncAll(cb); }
+
   function defaultState(){
-    var dduy = freshPerson([
-      {id:'seed1', tanggal:'2026-10-21', jumlah:5729876, catatan:'Gaji pertama magang', tipe:'rutin'},
-      {id:'seed2', tanggal:'2026-11-03', jumlah:500000, catatan:'', tipe:'rutin'}
-    ]);
-    dduy.saldoAwal = 4000000;
-    dduy.tanggalAwal = '2026-10-18';
-    return {
-      activePerson: 'dduy',
-      people: { dduy: dduy, acaa: freshPerson(null) }
-    };
+    return { activePerson:'dduy', people:{ dduy: freshPerson(), acaa: freshPerson() } };
   }
   function loadState(){
     try{
@@ -508,15 +595,16 @@ section[data-tab][hidden]{display:none}
       if(!parsed || typeof parsed!=='object' || !parsed.people) return defaultState();
       var d = defaultState();
       d.activePerson = parsed.activePerson==='acaa' ? 'acaa' : 'dduy';
-      ['dduy','acaa'].forEach(function(k){ if(parsed.people[k]) d.people[k] = Object.assign(freshPerson(null), parsed.people[k]); });
+      ['dduy','acaa'].forEach(function(k){ if(parsed.people[k]) d.people[k] = normPerson(parsed.people[k]); });
       return d;
     }catch(e){ return defaultState(); }
   }
   function saveLocalOnly(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){} }
   function saveState(personKey){
     saveLocalOnly();
-    syncPush(personKey);
+    syncPush();
   }
+  function touchScalars(key){ state.people[key].scalarsAt = nowTs(); }
 
   /* ---------------- Helpers ---------------- */
   function rupiah(n){
@@ -544,9 +632,30 @@ section[data-tab][hidden]{display:none}
     var d = person ? state.people[person] : activeData();
     return d.pengeluaran.filter(function(p){ return sameMonth(p.tanggal,y,m) && (!kategoriId || p.kategoriId===kategoriId); }).reduce(function(s,p){ return s+p.jumlah; },0);
   }
+  /* % target yang berlaku di bulan y/m: pakai pengaturan bulan itu; kalau belum diatur,
+     ikut pengaturan bulan terdekat SEBELUMNYA; kalau gak ada sama sekali, pakai pengaturan awal.
+     Jadi ubah November gak pernah ngubah Oktober. */
+  function persenFor(person,y,m){
+    var key = ymKey(y,m), bestKey = '', best = null;
+    Object.keys(person.persenBulan||{}).forEach(function(k){ if(k<=key && k>bestKey){ bestKey=k; best=person.persenBulan[k]; } });
+    if(best) return {p:best, own:bestKey===key, from:bestKey};
+    return {p:person.persen, own:false, from:''};
+  }
+  /* Kas di awal bulan y/m = saldo awal + semua pemasukan - semua pengeluaran SEBELUM tanggal 1 bulan itu. */
+  function kasAwalBulan(y,m,person){
+    var d = person ? state.people[person] : activeData();
+    var first = ymKey(y,m)+'-01';
+    var masuk = d.pemasukan.filter(function(p){ return p.tanggal < first; }).reduce(function(s,p){ return s+p.jumlah; },0);
+    var keluar = d.pengeluaran.filter(function(p){ return p.tanggal < first; }).reduce(function(s,p){ return s+p.jumlah; },0);
+    return d.saldoAwal + masuk - keluar;
+  }
+  /* Dasar pembagian target bulan itu = kas awal bulan + pemasukan rutin bulan itu (tetap, gak mengecil tiap belanja). */
+  function dasarAlokasi(y,m,person){
+    return Math.max(0, kasAwalBulan(y,m,person) + pemasukanBulan(y,m,person));
+  }
   function alokasiKategori(kategoriId,y,m){
-    var persen = activeData().persen[kategoriId] || 0;
-    return pemasukanBulan(y,m) * persen/100;
+    var persen = persenFor(activeData(),y,m).p[kategoriId] || 0;
+    return dasarAlokasi(y,m) * persen/100;
   }
   function saldoKasSekarang(person){
     var d = person ? state.people[person] : activeData();
@@ -629,7 +738,7 @@ section[data-tab][hidden]{display:none}
         '<div class="kategori-nums"><span>Terpakai <b>'+rupiah(used)+'</b></span><span>Target <b>'+rupiah(target)+'</b></span></div>';
       list.appendChild(div);
     });
-    document.getElementById('dashHint').textContent = 'Cuma pemasukan Tipe=Rutin & pengeluaran di bulan '+monthLabel(y,m)+' yang dihitung ke alokasi ini.';
+    document.getElementById('dashHint').textContent = 'Dasar target '+monthLabel(y,m)+': '+rupiah(dasarAlokasi(y,m))+' (kas awal bulan + pemasukan rutin).';
   }
 
   /* ---------------- Render: Pemasukan ---------------- */
@@ -700,12 +809,10 @@ section[data-tab][hidden]{display:none}
         '<div class="kategori-nums"><span>Terpakai <b>'+rupiah(used)+'</b></span><span>Target <b>'+rupiah(target)+'</b></span></div>';
       wrap.appendChild(row);
     });
-    if(pm===0){
-      var note = document.createElement('p');
-      note.className='hint';
-      note.textContent = 'Belum ada Pemasukan Tipe=Rutin di bulan ini, jadi target alokasi masih Rp 0.';
-      wrap.appendChild(note);
-    }
+    var note = document.createElement('p');
+    note.className='hint';
+    note.textContent = 'Dasar target '+monthLabel(y,m)+': '+rupiah(dasarAlokasi(y,m))+' (kas awal bulan + pemasukan rutin).';
+    wrap.appendChild(note);
   }
   function renderPengeluaranList(){
     var y=pengeluaranSelectedMonth.y, m=pengeluaranSelectedMonth.m;
@@ -739,44 +846,54 @@ section[data-tab][hidden]{display:none}
 
   /* ---------------- Render: Tracker ---------------- */
   function buildTracker(){
-    var months = monthRange();
-    var saldoAkhir = activeData().saldoAwal;
-    return months.map(function(mm){
+    var t = today(), nowKey = ymKey(t.getFullYear(), t.getMonth());
+    return monthRange().map(function(mm){
+      var key = ymKey(mm.y,mm.m);
       var masuk = pemasukanBulan(mm.y,mm.m);
       var keluar = pengeluaranBulan(mm.y,mm.m);
       var sisa = masuk - keluar;
-      saldoAkhir += sisa;
+      var dasar = dasarAlokasi(mm.y,mm.m);
+      var hasData = (masuk!==0 || keluar!==0);
       var status;
-      if(masuk===0 && keluar===0) status='-';
-      else if(sisa>0) status='Untung';
-      else if(sisa<0) status='Rugi';
-      else status='Impas';
-      return {y:mm.y,m:mm.m,masuk:masuk,keluar:keluar,sisa:sisa,pct: masuk>0 ? (keluar/masuk*100) : 0, saldoAkhir:saldoAkhir, status:status};
+      if(key > nowKey || !hasData) status = '-';                 // belum mulai / kosong
+      else if(key === nowKey) status = 'Berjalan';               // bulan ini: belum dinilai
+      else status = sisa>0 ? 'Untung' : sisa<0 ? 'Rugi' : 'Impas'; // sudah lewat: baru dinilai
+      return {y:mm.y,m:mm.m,key:key,masuk:masuk,keluar:keluar,sisa:sisa,dasar:dasar,hasData:hasData,
+              pct: dasar>0 ? (keluar/dasar*100) : 0, status:status, selesai: key<nowKey};
     });
   }
+  function fmtJt(n){
+    var a = Math.abs(n);
+    var t = a>=1000000 ? (a/1000000).toFixed(1).replace('.',',')+'jt' : a>=1000 ? Math.round(a/1000)+'rb' : String(Math.round(a));
+    return (n<0?'-':'')+t;
+  }
+  /* Grafik batang: Sisa (pemasukan - pengeluaran) tiap bulan, berdiri sendiri. Bulan tanpa data gak digambar. */
   function renderTrackerChart(rows){
-    var w=600,h=150,padL=6,padR=6,padT=14,padB=18;
-    var vals = rows.map(function(r){return r.saldoAkhir;});
-    var min = Math.min.apply(null, vals.concat([activeData().saldoAwal]));
-    var max = Math.max.apply(null, vals.concat([activeData().saldoAwal]));
-    if(max===min){ max = min+1; }
-    var innerW = w-padL-padR, innerH = h-padT-padB;
-    var pts = rows.map(function(r,i){
-      var x = padL + (innerW * (i/(rows.length-1||1)));
-      var y = padT + innerH - ((r.saldoAkhir-min)/(max-min))*innerH;
-      return [x,y];
-    });
-    var path = pts.map(function(p,i){ return (i===0?'M':'L')+p[0].toFixed(1)+','+p[1].toFixed(1); }).join(' ');
-    var areaPath = path + ' L'+pts[pts.length-1][0].toFixed(1)+','+(padT+innerH)+' L'+pts[0][0].toFixed(1)+','+(padT+innerH)+' Z';
-    var last = pts[pts.length-1];
-    var baseY = padT+innerH;
-    document.getElementById('trackerChart').innerHTML =
-      '<svg viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" role="img" aria-label="Tren saldo akhir">'+
-        '<line x1="'+padL+'" y1="'+baseY+'" x2="'+(w-padR)+'" y2="'+baseY+'" stroke="var(--border)" stroke-width="1"/>'+
-        '<path d="'+areaPath+'" fill="var(--accent)" opacity="0.12" stroke="none"/>'+
-        '<path d="'+path+'" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'+
-        '<circle cx="'+last[0].toFixed(1)+'" cy="'+last[1].toFixed(1)+'" r="4.5" fill="var(--accent)" stroke="var(--surface)" stroke-width="2"/>'+
-      '</svg>';
+    var t = today(), cur = ymKey(t.getFullYear(), t.getMonth());
+    var shown = rows.filter(function(r){ return r.hasData || r.key===cur; });
+    var box = document.getElementById('trackerChart');
+    if(!shown.length){ box.innerHTML = '<div class="empty"><span>Belum ada data bulanan</span></div>'; return; }
+    var H = 110;
+    var maxPos = Math.max.apply(null, shown.map(function(r){ return Math.max(0,r.sisa); }).concat([0]));
+    var maxNeg = Math.max.apply(null, shown.map(function(r){ return Math.max(0,-r.sisa); }).concat([0]));
+    var tot = (maxPos+maxNeg) || 1;
+    var zeroTop = maxPos/tot*H;
+    var withVal = shown.length<=8;
+    box.innerHTML = '<div class="bars">'+shown.map(function(r){
+      var h = Math.max(2, Math.abs(r.sisa)/tot*H);
+      var top = r.sisa>=0 ? zeroTop-h : zeroTop;
+      if(r.sisa===0){ h=2; top=zeroTop-1; }
+      var tone = !r.selesai ? 'run' : (r.sisa>=0 ? 'pos' : 'neg');   // bulan berjalan: abu-abu, belum dinilai
+      var isNow = ymKey(r.y,r.m)===cur;
+      return '<div class="bar-col'+(isNow?' now':'')+'" title="'+monthLabel(r.y,r.m)+': '+rupiah(r.sisa)+'">'+
+        '<div class="bar-area" style="height:'+H+'px">'+
+          '<div class="bar-zero" style="top:'+zeroTop.toFixed(1)+'px"></div>'+
+          '<div class="bar '+tone+'" style="top:'+top.toFixed(1)+'px;height:'+h.toFixed(1)+'px"></div>'+
+        '</div>'+
+        (withVal?'<div class="bar-val">'+fmtJt(r.sisa)+'</div>':'')+
+        '<div class="bar-lbl">'+MONTH_NAMES[r.m]+'</div>'+
+      '</div>';
+    }).join('')+'</div>';
   }
   function renderTracker(){
     var rows = buildTracker();
@@ -791,22 +908,46 @@ section[data-tab][hidden]{display:none}
         '<div class="tracker-grid">'+
           '<span class="k">Pemasukan</span><span class="v tabular">'+rupiah(r.masuk)+'</span>'+
           '<span class="k">Terpakai</span><span class="v tabular">'+rupiah(r.keluar)+'</span>'+
-          '<span class="k">Sisa</span><span class="v tabular">'+rupiah(r.sisa)+'</span>'+
+          '<span class="k">Sisa bulan ini</span><span class="v tabular">'+rupiah(r.sisa)+'</span>'+
           '<span class="k">% Pakai</span><span class="v tabular">'+r.pct.toFixed(0)+'%</span>'+
-          '<span class="k">Saldo Akhir</span><span class="v tabular">'+rupiah(r.saldoAkhir)+'</span>'+
         '</div>'+
       '</div>';
     }).join('');
   }
 
   /* ---------------- Render: Setup (dual person) ---------------- */
+  var setupMonth = null;
   function renderSetup(){
+    var t = today();
+    if(!setupMonth) setupMonth = {y:t.getFullYear(), m:t.getMonth()};
+    var inRange = monthRange().some(function(mm){ return mm.y===setupMonth.y && mm.m===setupMonth.m; });
+    if(!inRange) setupMonth = monthRange()[0];
+    var sm = setupMonth, smLabel = monthLabel(sm.y,sm.m), smKey = ymKey(sm.y,sm.m);
+
+    var sc = document.getElementById('setupMonthScroller');
+    sc.innerHTML = '';
+    monthRange().forEach(function(mm){
+      var chip = document.createElement('button');
+      var isNow = mm.y===t.getFullYear() && mm.m===t.getMonth();
+      var isActive = mm.y===sm.y && mm.m===sm.m;
+      chip.className = 'month-chip'+(isActive?' active':'')+(isNow?' now':'');
+      chip.textContent = monthLabel(mm.y,mm.m);
+      chip.onclick = function(){ setupMonth = mm; renderSetup(); };
+      sc.appendChild(chip);
+      if(isActive) setTimeout(function(){ try{ chip.scrollIntoView({inline:'center',block:'nearest'}); }catch(e){} },0);
+    });
+
     var wrap = document.getElementById('peopleCards');
     wrap.innerHTML = '';
     ['dduy','acaa'].forEach(function(key){
       var meta = PEOPLE_META[key];
       var person = state.people[key];
-      var total = KATEGORI.reduce(function(s,k){ return s+(person.persen[k.id]||0); },0);
+      var pf = persenFor(person, sm.y, sm.m);
+      var total = KATEGORI.reduce(function(s,k){ return s+(pf.p[k.id]||0); },0);
+      var pill;
+      if(pf.own) pill = '<span class="set-pill ok">✓ Sudah diatur</span>';
+      else if(pf.from){ var fy=Number(pf.from.slice(0,4)), fm=Number(pf.from.slice(5))-1; pill = '<span class="set-pill">Belum diatur · ikut '+monthLabel(fy,fm)+'</span>'; }
+      else pill = '<span class="set-pill">Belum diatur · pengaturan awal</span>';
       var card = document.createElement('div');
       card.className = 'person-card theme-'+key;
       card.innerHTML =
@@ -818,12 +959,13 @@ section[data-tab][hidden]{display:none}
         '<div class="field"><label>Saldo Awal (Rp)</label><input type="number" min="0" step="1" data-saldo="'+key+'" value="'+person.saldoAwal+'"></div>'+
         '<div class="field"><label>Tanggal dicatat</label><input type="date" data-tanggal="'+key+'" value="'+person.tanggalAwal+'"></div>'+
         '<div style="display:flex;flex-direction:column;gap:8px">'+
-          '<div class="section-title"><span>% Target per kategori</span><span class="percent-total '+(total===100?'ok':'bad')+'" data-total="'+key+'">Total '+total+'%'+(total===100?' ✓':'')+'</span></div>'+
+          '<div class="section-title"><span>% Target · '+smLabel+'</span><span class="percent-total '+(total===100?'ok':'bad')+'" data-total="'+key+'">Total '+total+'%'+(total===100?' ✓':'')+'</span></div>'+
+          '<div>'+pill+'</div>'+
           KATEGORI.map(function(k){
             return '<div class="kategori-edit-row">'+
               '<div class="kategori-icon" style="width:28px;height:28px;font-size:15px">'+k.icon+'</div>'+
               '<div style="flex:1;min-width:0;font-size:13px;font-weight:600">'+k.nama+'</div>'+
-              '<input type="number" min="0" max="100" data-person="'+key+'" data-kat="'+k.id+'" value="'+(person.persen[k.id]||0)+'">'+
+              '<input type="number" min="0" max="100" data-person="'+key+'" data-kat="'+k.id+'" value="'+(pf.p[k.id]||0)+'">'+
               '<span style="font-size:12.5px;color:var(--ink-dim)">%</span>'+
             '</div>';
           }).join('')+
@@ -840,13 +982,16 @@ section[data-tab][hidden]{display:none}
       inp.addEventListener('change', function(){
         var key = inp.getAttribute('data-saldo');
         state.people[key].saldoAwal = Math.max(0, Number(inp.value)||0);
+        touchScalars(key);
         saveState(key); renderAll();
       });
     });
     wrap.querySelectorAll('[data-tanggal]').forEach(function(inp){
       inp.addEventListener('change', function(){
         var key = inp.getAttribute('data-tanggal');
+        if(!inp.value) return;
         state.people[key].tanggalAwal = inp.value;
+        touchScalars(key);
         saveState(key);
       });
     });
@@ -855,7 +1000,13 @@ section[data-tab][hidden]{display:none}
         var key = inp.getAttribute('data-person');
         var kat = inp.getAttribute('data-kat');
         var val = Math.max(0, Math.min(100, Number(inp.value)||0));
-        state.people[key].persen[kat] = val;
+        var person = state.people[key];
+        var cur = persenFor(person, sm.y, sm.m).p;
+        var obj = {};
+        KATEGORI.forEach(function(k){ obj[k.id] = cur[k.id]||0; });
+        obj[kat] = val;
+        obj.ts = nowTs();
+        person.persenBulan[smKey] = obj;   // cuma bulan ini yang berubah
         saveState(key);
         renderSetup();
       });
@@ -902,6 +1053,7 @@ section[data-tab][hidden]{display:none}
         row.appendChild(confirmBox);
         confirmBox.querySelector('[data-yes]').onclick = function(){
           activeData()[kind] = activeData()[kind].filter(function(x){ return x.id!==id; });
+          activeData().deleted[id] = nowTs();
           saveState(); renderAll();
         };
         confirmBox.querySelector('[data-no]').onclick = function(){ confirmBox.remove(); };
@@ -975,7 +1127,8 @@ section[data-tab][hidden]{display:none}
       });
     } else {
       var katOptions = KATEGORI.map(function(k){ return '<option value="'+k.id+'">'+k.icon+' '+k.nama+'</option>'; }).join('');
-      var defDate = new Date(pengeluaranSelectedMonth.y, pengeluaranSelectedMonth.m, Math.min(today().getDate(),28)).toISOString().slice(0,10);
+      var lastDay = new Date(pengeluaranSelectedMonth.y, pengeluaranSelectedMonth.m+1, 0).getDate();
+      var defDate = localISO(new Date(pengeluaranSelectedMonth.y, pengeluaranSelectedMonth.m, Math.min(today().getDate(),lastDay)));
       openSheet(
         '<div class="sheet-title">Catat Pengeluaran</div>'+
         '<form id="formPengeluaran" style="display:flex;flex-direction:column;gap:12px">'+
@@ -1023,7 +1176,7 @@ section[data-tab][hidden]{display:none}
 
   /* ---------------- Boot ---------------- */
   window.refreshNow = function(){
-    syncPull(function(){ renderAll(); });
+    syncAll(function(){ renderAll(); });
   };
   function start(){
     state = loadState();
@@ -1031,7 +1184,11 @@ section[data-tab][hidden]{display:none}
     if(!location.hash) location.hash = '#dashboard';
     router();
     updateSyncBtn();
-    syncPull(function(changed){ if(changed) renderAll(); });
+    syncAll(function(){ if(!userIsTyping()) renderAll(); });
+    document.addEventListener('visibilitychange', function(){
+      if(document.visibilityState==='visible') syncAll(function(){ if(!userIsTyping()) renderAll(); });
+    });
+    window.addEventListener('online', function(){ syncAll(function(){ if(!userIsTyping()) renderAll(); }); });
   }
   if(window.claude && window.claude.hot){
     window.claude.hot.snapshot(function(){ return {}; });
