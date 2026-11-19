@@ -308,6 +308,87 @@ section[data-tab][hidden]{display:none}
 .status-pill.Impas{background:var(--surface-2);color:var(--ink-dim)}
 .status-pill.dash{background:var(--surface-2);color:var(--ink-dim)}
 
+/* ---- Undo / Ulangi (Setup) ---- */
+.undo-bar{position:sticky;top:0;z-index:6;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 10px;border-radius:16px;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.undo-btn{border:1px solid var(--border);background:var(--surface-2);color:var(--ink);border-radius:12px;padding:8px 12px;font-size:12.5px;font-weight:700;min-height:36px;transition:transform .12s ease,opacity .2s ease}
+.undo-btn:not(:disabled){background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.undo-btn:disabled{opacity:.45}
+.undo-btn:not(:disabled):active{transform:scale(.95)}
+.undo-last{flex:1 1 100%;font-size:11.5px;color:var(--ink-dim);line-height:1.4;min-width:0}
+.undo-last b{color:var(--ink);font-weight:700}
+.undo-toast{position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom,0px));transform:translate(-50%,12px);z-index:40;max-width:min(92vw,420px);display:flex;align-items:center;gap:12px;padding:10px 10px 10px 16px;border-radius:16px;background:var(--ink);color:var(--bg);font-size:13px;font-weight:600;box-shadow:0 14px 28px -10px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .22s ease,transform .22s ease}
+.undo-toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.ut-btn{border:none;background:var(--accent);color:var(--accent-ink);border-radius:10px;padding:8px 12px;font-size:12.5px;font-weight:800;min-height:34px}
+
+/* ============================================================
+   Skin per profil
+   Dduy = biru solid, kotak 3D (tepi tegas, tombol seperti keycap)
+   Acaa = pink, 3D tipis (tepi halus, kilap lembut, gelembung)
+   ============================================================ */
+.app[data-person]{--edge:color-mix(in srgb,var(--border) 62%,#000);--accent-edge:color-mix(in srgb,var(--accent) 60%,#000)}
+.appbar{position:relative;z-index:7}
+.hero-card{position:relative}
+
+/* ---- Dduy ---- */
+.app[data-person="dduy"] .appbar{box-shadow:0 4px 0 var(--accent-edge)}
+.app[data-person="dduy"] .card,
+.app[data-person="dduy"] .stat-tile,
+.app[data-person="dduy"] .entry-row,
+.app[data-person="dduy"] .legend,
+.app[data-person="dduy"] .undo-bar{border-radius:14px;box-shadow:0 3px 0 var(--edge)}
+.app[data-person="dduy"] .hero-card{background:var(--accent);border-radius:16px;box-shadow:0 6px 0 var(--accent-edge),0 18px 24px -14px rgba(0,0,0,.5)}
+.app[data-person="dduy"] .btn-primary,
+.app[data-person="dduy"] .undo-btn:not(:disabled),
+.app[data-person="dduy"] .ut-btn{box-shadow:0 4px 0 var(--accent-edge);border-radius:12px}
+.app[data-person="dduy"] .btn-primary:active,
+.app[data-person="dduy"] .undo-btn:not(:disabled):active{transform:translateY(3px);box-shadow:0 1px 0 var(--accent-edge)}
+.app[data-person="dduy"] .fab{border-radius:16px;box-shadow:0 5px 0 var(--accent-edge),0 16px 22px -8px rgba(0,0,0,.5)}
+.app[data-person="dduy"] .fab:active{transform:translateY(4px);box-shadow:0 1px 0 var(--accent-edge)}
+.app[data-person="dduy"] .month-chip.active{box-shadow:0 3px 0 var(--accent-edge)}
+.app[data-person="dduy"] .avatar{border-radius:6px;box-shadow:2px 2px 0 rgba(0,0,0,.3)}
+.app[data-person="dduy"] .profile-chip{border-radius:12px;box-shadow:0 3px 0 rgba(0,0,0,.22)}
+.app[data-person="dduy"] .progress{border-radius:4px;box-shadow:inset 0 2px 0 rgba(0,0,0,.2)}
+.app[data-person="dduy"] .progress > i{border-radius:3px}
+.app[data-person="dduy"] .kategori-icon{border-radius:9px;box-shadow:0 2px 0 var(--edge)}
+
+/* ---- Acaa ---- */
+.app[data-person="acaa"] .appbar{box-shadow:0 3px 0 color-mix(in srgb,var(--accent) 78%,#000)}
+.app[data-person="acaa"] .card,
+.app[data-person="acaa"] .stat-tile,
+.app[data-person="acaa"] .entry-row,
+.app[data-person="acaa"] .legend,
+.app[data-person="acaa"] .undo-bar{box-shadow:0 2px 0 var(--edge),0 12px 18px -14px color-mix(in srgb,var(--accent) 45%,transparent),inset 0 1px 0 color-mix(in srgb,#fff 40%,transparent)}
+.app[data-person="acaa"] .hero-card{background:radial-gradient(circle at 18% 0%,rgba(255,255,255,.34),transparent 55%),linear-gradient(160deg,var(--accent),color-mix(in srgb,var(--accent) 65%,white) 150%);
+  box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 72%,#000),0 16px 24px -12px color-mix(in srgb,var(--accent) 55%,transparent),inset 0 1px 0 rgba(255,255,255,.45)}
+.app[data-person="acaa"] .btn-primary,
+.app[data-person="acaa"] .undo-btn:not(:disabled),
+.app[data-person="acaa"] .ut-btn{box-shadow:0 3px 0 var(--accent-edge),inset 0 1px 0 rgba(255,255,255,.35)}
+.app[data-person="acaa"] .btn-primary:active,
+.app[data-person="acaa"] .undo-btn:not(:disabled):active{transform:translateY(2px);box-shadow:0 1px 0 var(--accent-edge)}
+.app[data-person="acaa"] .fab{box-shadow:0 4px 0 var(--accent-edge),0 14px 24px -8px color-mix(in srgb,var(--accent) 55%,transparent),inset 0 2px 0 rgba(255,255,255,.4)}
+.app[data-person="acaa"] .fab:active{transform:translateY(3px);box-shadow:0 1px 0 var(--accent-edge)}
+.app[data-person="acaa"] .month-chip.active{box-shadow:0 2px 0 var(--accent-edge)}
+.app[data-person="acaa"] .avatar{box-shadow:inset 0 -2px 0 rgba(0,0,0,.14),0 2px 0 rgba(0,0,0,.18),inset 0 1px 0 #fff}
+.app[data-person="acaa"] .profile-chip{box-shadow:0 2px 0 rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.35)}
+.app[data-person="acaa"] .progress{box-shadow:inset 0 2px 0 rgba(0,0,0,.08)}
+.app[data-person="acaa"] .progress > i{position:relative}
+.app[data-person="acaa"] .progress > i::after{content:"";position:absolute;left:0;right:0;top:0;height:45%;background:rgba(255,255,255,.3);border-radius:inherit}
+.app[data-person="acaa"] .kategori-icon{box-shadow:0 2px 0 var(--edge),inset 0 1px 0 rgba(255,255,255,.4)}
+
+/* ---- Kartu profil di Setup: tiap orang punya tampilan sendiri ---- */
+.person-card{position:relative;overflow:hidden}
+.person-head{position:relative;margin:-16px -16px 2px;padding:14px 16px;color:#fff}
+.person-head .person-name{color:#fff}
+.person-head .person-tag{color:rgba(255,255,255,.85)}
+.person-head .btn{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.55);color:#fff}
+.person-card.theme-dduy{border-radius:14px;border:2px solid var(--pc-accent);box-shadow:0 5px 0 color-mix(in srgb,var(--pc-accent) 60%,#000)}
+.person-card.theme-dduy .person-head{background:var(--pc-accent);box-shadow:0 3px 0 color-mix(in srgb,var(--pc-accent) 60%,#000)}
+.person-card.theme-dduy .person-avatar{background:#fff;color:var(--pc-accent);border-radius:8px;box-shadow:3px 3px 0 rgba(0,0,0,.28)}
+.person-card.theme-acaa{border-radius:22px;border:1.5px solid color-mix(in srgb,var(--pc-accent) 45%,var(--border));box-shadow:0 3px 0 color-mix(in srgb,var(--pc-accent) 55%,#000),0 14px 20px -14px color-mix(in srgb,var(--pc-accent) 50%,transparent)}
+.person-card.theme-acaa .person-head{background:radial-gradient(circle at 20% 0%,rgba(255,255,255,.3),transparent 55%),linear-gradient(160deg,var(--pc-accent),color-mix(in srgb,var(--pc-accent) 70%,#fff));box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.person-card.theme-acaa .person-avatar{background:#fff;color:var(--pc-accent);border-radius:50%;box-shadow:0 2px 0 rgba(0,0,0,.18),inset 0 -2px 0 rgba(0,0,0,.08)}
+.person-head > *{position:relative;z-index:1}
+
 /* ---- Setup: dual-person cards ---- */
 .person-card{border:1.5px solid var(--border);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--surface);box-shadow:var(--shadow-sm)}
 .person-card.theme-dduy{--pc-accent:#1B46C4;--pc-soft:#DCE7FF}
@@ -341,7 +422,8 @@ section[data-tab][hidden]{display:none}
 .set-pill{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--surface-2);color:var(--ink-dim)}
 .set-pill.ok{background:color-mix(in srgb, var(--aman) 16%, transparent);color:var(--aman)}
 .kategori-edit-row{display:flex;align-items:center;gap:10px}
-.kategori-edit-row input{width:68px;text-align:right}
+.kategori-edit-row input{width:68px;text-align:right;background:var(--surface-2);color:var(--ink);border:1px solid var(--border);border-radius:10px;padding:8px 10px;font-size:14px;font-weight:600}
+.kategori-edit-row input:focus{outline:2px solid var(--pc-accent, var(--accent));outline-offset:1px}
 .percent-total{font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:6px}
 .percent-total.ok{color:var(--aman)}
 .percent-total.bad{color:var(--boros)}
@@ -497,6 +579,7 @@ section[data-tab][hidden]{display:none}
       </section>
 
       <section data-tab="setup" id="tab-setup" hidden>
+        <div id="undoBar"></div>
         <div class="month-scroller" id="setupMonthScroller"></div>
         <div id="peopleCards" style="display:flex;flex-direction:column;gap:14px"></div>
       </section>
@@ -516,6 +599,8 @@ section[data-tab][hidden]{display:none}
       <button class="tab-btn" data-nav="setup" onclick="location.hash='#setup'"><span class="ic">⚙️</span>Setup</button>
     </div>
   </nav>
+
+  <div class="undo-toast" id="undoToast" role="status" aria-live="polite"></div>
 
   <div class="cmp-modal" id="cmpModal" hidden role="dialog" aria-modal="true" aria-label="Bandingkan grafik bulanan">
     <div class="cmp-head">
@@ -747,7 +832,7 @@ section[data-tab][hidden]{display:none}
      Jadi ubah November gak pernah ngubah Oktober. */
   function persenFor(person,y,m){
     var key = ymKey(y,m), bestKey = '', best = null;
-    Object.keys(person.persenBulan||{}).forEach(function(k){ if(k<=key && k>bestKey){ bestKey=k; best=person.persenBulan[k]; } });
+    Object.keys(person.persenBulan||{}).forEach(function(k){ var e=person.persenBulan[k]; if(e && !e.removed && k<=key && k>bestKey){ bestKey=k; best=e; } });
     if(best) return {p:best, own:bestKey===key, from:bestKey};
     return {p:person.persen, own:false, from:''};
   }
@@ -841,7 +926,15 @@ section[data-tab][hidden]{display:none}
 
   /* ---------------- Router ---------------- */
   var TABS = ['dashboard','pemasukan','pengeluaran','tracker','setup'];
-  var pengeluaranSelectedMonth = RANGE_START;
+  /* Buka app → langsung di bulan berjalan (dijepit ke rentang Okt 2026 – Des 2027) */
+  function defaultMonth(){
+    var t = today(), r = monthRange(), k = ymKey(t.getFullYear(), t.getMonth());
+    if(k <= ymKey(r[0].y, r[0].m)) return r[0];
+    if(k >= ymKey(r[r.length-1].y, r[r.length-1].m)) return r[r.length-1];
+    return r.filter(function(mm){ return ymKey(mm.y,mm.m)===k; })[0];
+  }
+  var pengeluaranSelectedMonth = defaultMonth();
+  var bootMonthKey = ymKey(today().getFullYear(), today().getMonth());
 
   function currentTab(){
     var h = location.hash.replace('#','');
@@ -1299,14 +1392,81 @@ section[data-tab][hidden]{display:none}
     }).join('');
   }
 
+  /* ---------------- Undo / Ulangi perubahan Setup ---------------- */
+  var UNDO_KEY = 'canduy-undo-v1', UNDO_MAX = 25;
+  var undoStack = [], redoStack = [], undoToastTimer = null;
+  (function(){ try{ var u = JSON.parse(localStorage.getItem(UNDO_KEY)||'null'); if(u){ undoStack = u.undo||[]; redoStack = u.redo||[]; } }catch(e){} })();
+  function persistUndo(){ try{ localStorage.setItem(UNDO_KEY, JSON.stringify({undo:undoStack, redo:redoStack})); }catch(e){} }
+  function setupSnap(key){
+    var p = state.people[key];
+    return {saldoAwal:p.saldoAwal, tanggalAwal:p.tanggalAwal, persen:clone(p.persen), persenBulan:clone(p.persenBulan)};
+  }
+  /* Kembalikan isi Setup ke snapshot. ts dibuat BARU supaya hasil undo menang saat sync ke HP lain.
+     Bulan yang tadinya belum diatur ditandai removed (bukan dihapus) biar ikut tersinkron. */
+  function applySnap(key, snap){
+    var p = state.people[key], ts = nowTs(), old = clone(p.persenBulan), keys = {}, next = {};
+    p.saldoAwal = snap.saldoAwal; p.tanggalAwal = snap.tanggalAwal; p.persen = clone(snap.persen);
+    Object.keys(old).concat(Object.keys(snap.persenBulan)).forEach(function(k){ keys[k] = 1; });
+    Object.keys(keys).forEach(function(k){
+      var sv = snap.persenBulan[k], ov = old[k], o;
+      if(sv && !sv.removed){ o = clone(sv); o.ts = ts; next[k] = o; }
+      else if(ov && !ov.removed){
+        var eff = persenFor(snap, Number(k.slice(0,4)), Number(k.slice(5))-1);
+        o = clone(eff.p); o.removed = true; o.ts = ts; next[k] = o;
+      }
+      else next[k] = sv || ov;
+    });
+    p.persenBulan = next; touchScalars(key);
+  }
+  function recordUndo(key, desc, short){
+    undoStack.push({key:key, desc:desc, short:short||desc, snap:setupSnap(key)});
+    if(undoStack.length > UNDO_MAX) undoStack.shift();
+    redoStack = []; persistUndo();
+    showUndoToast(short||desc);
+  }
+  function doUndo(){
+    var e = undoStack.pop(); if(!e) return;
+    redoStack.push({key:e.key, desc:e.desc, short:e.short, snap:setupSnap(e.key)});
+    applySnap(e.key, e.snap); persistUndo(); saveState(e.key); renderAll();
+    showUndoToast('Diurungkan · '+e.short, true);
+  }
+  function doRedo(){
+    var e = redoStack.pop(); if(!e) return;
+    undoStack.push({key:e.key, desc:e.desc, short:e.short, snap:setupSnap(e.key)});
+    applySnap(e.key, e.snap); persistUndo(); saveState(e.key); renderAll();
+    showUndoToast('Diulangi · '+e.short, true);
+  }
+  function showUndoToast(msg, plain){
+    var el = document.getElementById('undoToast'); if(!el) return;
+    el.innerHTML = '<span class="ut-msg"></span>'+(plain?'':'<button class="ut-btn" id="utBtn">Urungkan</button>');
+    el.querySelector('.ut-msg').textContent = msg;
+    var b = document.getElementById('utBtn'); if(b) b.onclick = function(){ doUndo(); };
+    el.classList.add('show');
+    clearTimeout(undoToastTimer); undoToastTimer = setTimeout(function(){ el.classList.remove('show'); }, plain?2200:7000);
+  }
+  function renderUndoBar(){
+    var host = document.getElementById('undoBar'); if(!host) return;
+    var last = undoStack[undoStack.length-1];
+    host.innerHTML =
+      '<div class="undo-bar">'+
+        '<button class="undo-btn" id="undoBtn"'+(undoStack.length?'':' disabled')+'>↶ Urungkan</button>'+
+        '<button class="undo-btn" id="redoBtn"'+(redoStack.length?'':' disabled')+'>Ulangi ↷</button>'+
+        '<div class="undo-last">'+(last ? 'Terakhir · '+'<b></b>' : 'Belum ada perubahan')+'</div>'+
+      '</div>';
+    if(last) host.querySelector('.undo-last b').textContent = last.desc;
+    document.getElementById('undoBtn').onclick = doUndo;
+    document.getElementById('redoBtn').onclick = doRedo;
+  }
+
   /* ---------------- Render: Setup (dual person) ---------------- */
   var setupMonth = null;
   function renderSetup(){
     var t = today();
-    if(!setupMonth) setupMonth = {y:t.getFullYear(), m:t.getMonth()};
+    if(!setupMonth) setupMonth = defaultMonth();
     var inRange = monthRange().some(function(mm){ return mm.y===setupMonth.y && mm.m===setupMonth.m; });
     if(!inRange) setupMonth = monthRange()[0];
     var sm = setupMonth, smLabel = monthLabel(sm.y,sm.m), smKey = ymKey(sm.y,sm.m);
+    renderUndoBar();
 
     var sc = document.getElementById('setupMonthScroller');
     sc.innerHTML = '';
@@ -1371,7 +1531,10 @@ section[data-tab][hidden]{display:none}
     wrap.querySelectorAll('[data-saldo]').forEach(function(inp){
       inp.addEventListener('change', function(){
         var key = inp.getAttribute('data-saldo');
-        state.people[key].saldoAwal = Math.max(0, Number(inp.value)||0);
+        var nv = Math.max(0, Number(inp.value)||0), ov = state.people[key].saldoAwal;
+        if(nv===ov){ renderSetup(); return; }
+        recordUndo(key, 'Saldo awal '+PEOPLE_META[key].nama+': '+rupiah(ov)+' → '+rupiah(nv), 'Saldo awal '+PEOPLE_META[key].nama+' diubah');
+        state.people[key].saldoAwal = nv;
         touchScalars(key);
         saveState(key); renderAll();
       });
@@ -1380,6 +1543,8 @@ section[data-tab][hidden]{display:none}
       inp.addEventListener('change', function(){
         var key = inp.getAttribute('data-tanggal');
         if(!inp.value) return;
+        if(inp.value===state.people[key].tanggalAwal) return;
+        recordUndo(key, 'Tanggal dicatat '+PEOPLE_META[key].nama+': '+state.people[key].tanggalAwal+' → '+inp.value, 'Tanggal dicatat '+PEOPLE_META[key].nama+' diubah');
         state.people[key].tanggalAwal = inp.value;
         touchScalars(key);
         saveState(key);
@@ -1392,6 +1557,9 @@ section[data-tab][hidden]{display:none}
         var val = Math.max(0, Math.min(100, Number(inp.value)||0));
         var person = state.people[key];
         var cur = persenFor(person, sm.y, sm.m).p;
+        if(val===(cur[kat]||0)){ renderSetup(); return; }
+        var kn = KATEGORI.filter(function(k){ return k.id===kat; })[0].nama;
+        recordUndo(key, '% '+kn+' '+PEOPLE_META[key].nama+' · '+smLabel+': '+(cur[kat]||0)+'% → '+val+'%', '% '+kn+' '+PEOPLE_META[key].nama+' diubah');
         var obj = {};
         KATEGORI.forEach(function(k){ obj[k.id] = cur[k.id]||0; });
         obj[kat] = val;
@@ -1579,6 +1747,10 @@ section[data-tab][hidden]{display:none}
     updateSyncBtn();
     syncAll(function(){ if(!userIsTyping()) renderAll(); });
     document.addEventListener('visibilitychange', function(){
+      if(document.visibilityState==='visible'){
+        var nk = ymKey(today().getFullYear(), today().getMonth());
+        if(nk!==bootMonthKey){ bootMonthKey = nk; pengeluaranSelectedMonth = defaultMonth(); setupMonth = null; }
+      }
       if(document.visibilityState==='visible') syncAll(function(){ if(!userIsTyping()) renderAll(); });
     });
     window.addEventListener('online', function(){ syncAll(function(){ if(!userIsTyping()) renderAll(); }); });
