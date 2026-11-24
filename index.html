@@ -502,6 +502,83 @@ section[data-tab][hidden]{display:none}
 .cmp-empty{font-size:12.5px;color:var(--ink-dim);text-align:center;padding:18px 8px}
 .chart-wrap svg{width:100%;height:auto;display:block}
 
+/* ---- Tab bar: 6 tab muat di HP kecil ---- */
+.tabbar-inner{padding-left:max(2px,env(safe-area-inset-left,0px));padding-right:max(2px,env(safe-area-inset-right,0px))}
+.tab-btn{min-width:0;font-size:10px;padding:9px 0 10px;white-space:nowrap;letter-spacing:-.1px}
+.tab-btn .ic{font-size:17px}
+
+/* ---- Wishlist ---- */
+#tab-wishlist [hidden],.field[hidden]{display:none!important}
+.sheet-title{margin-bottom:12px}
+.wl-head{display:flex;flex-direction:column;gap:4px}
+.wl-title{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
+.wl-sum{display:flex;flex-direction:column;gap:12px}
+.wl-sum-top{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.wl-sum .k{font-size:11.5px;color:var(--ink-dim);font-weight:600}
+.wl-sum .v{font-family:var(--font-display);font-size:27px;font-weight:700;margin-top:2px}
+.wl-sum-n{font-size:12px;color:var(--ink-dim);font-weight:600;padding-bottom:5px}
+.wl-sub{font-size:11.5px;font-weight:700;color:var(--ink-dim)}
+.wl-cells{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wl-cell{background:var(--surface-2);border-radius:14px;padding:11px 12px;display:flex;flex-direction:column;gap:5px;min-width:0}
+.wl-cell-h{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12.5px;font-weight:700;white-space:nowrap}
+.wl-cell-h .badge{font-size:10px;padding:2px 7px}
+.wl-cell-v{font-size:13px;font-weight:700}
+.wl-cell-s{font-size:11.5px;color:var(--ink-dim);font-weight:600}
+.wl-cell-s.lewat{color:var(--boros)}
+.wl-group{display:flex;flex-direction:column;gap:8px}
+.wl-ghead{display:flex;align-items:center;gap:8px;padding:6px 2px 0}
+.wl-gic{font-size:17px}
+.wl-gname{font-family:var(--font-display);font-size:15.5px;font-weight:600}
+.wl-gcount{margin-left:auto;font-size:11px;color:var(--ink-dim);font-weight:700;background:var(--surface-2);border-radius:999px;padding:2px 9px}
+.wl-item{padding:0;overflow:hidden}
+.wl-item.done{opacity:.7}
+.wl-item.done .wl-name{text-decoration:line-through;text-decoration-thickness:1.5px}
+.wl-row{display:flex;align-items:center;gap:10px;padding:12px 14px 12px 12px}
+.wl-chk{flex:0 0 auto;width:34px;height:34px;border-radius:11px;border:2px solid var(--border);background:var(--surface);color:transparent;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0;transition:background .2s ease,border-color .2s ease,color .2s ease,transform .15s ease}
+.wl-chk:active{transform:scale(.92)}
+.wl-chk.on{background:var(--aman);border-color:var(--aman);color:#fff}
+.wl-main{flex:1;min-width:0;background:none;border:none;text-align:left;color:inherit;padding:0;font:inherit;cursor:pointer}
+.wl-name{font-weight:700;font-size:14.5px;line-height:1.3;overflow-wrap:anywhere}
+.wl-meta{font-size:11.5px;color:var(--ink-dim);font-weight:600;margin-top:3px;display:flex;flex-wrap:wrap;gap:2px 10px}
+.wl-meta .late{color:var(--waspada)}
+.wl-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex:0 0 auto}
+.wl-price{font-weight:800;font-size:14px;font-family:var(--font-display)}
+.wl-more{padding:0 14px 14px 56px;display:flex;flex-direction:column;gap:10px}
+.wl-verdict{font-size:12px;font-weight:700;border-radius:11px;padding:8px 10px;line-height:1.45}
+.wl-verdict.hemat{background:color-mix(in srgb,var(--hemat) 14%,transparent);color:var(--hemat)}
+.wl-verdict.aman{background:color-mix(in srgb,var(--aman) 14%,transparent);color:var(--aman)}
+.wl-verdict.waspada{background:color-mix(in srgb,var(--waspada) 16%,transparent);color:var(--waspada)}
+.wl-verdict.boros{background:color-mix(in srgb,var(--boros) 16%,transparent);color:var(--boros)}
+.wl-desc{font-size:13px;line-height:1.55;overflow-wrap:anywhere}
+.wl-desc p{margin:0}
+.wl-desc ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px}
+.wl-desc li::marker{color:var(--accent)}
+.wl-links{display:flex;flex-direction:column;gap:6px}
+.wl-link{display:flex;align-items:center;justify-content:space-between;gap:8px;text-decoration:none;color:var(--ink);background:var(--surface-2);border-radius:11px;padding:10px 12px;font-size:12.5px;font-weight:700}
+.wl-link i{font-style:normal;color:var(--accent)}
+.wl-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.wl-actions .btn{padding:9px 13px;font-size:12.5px}
+.wl-actions .del{color:var(--boros)}
+.wl-boughtbtn{background:none;border:none;color:var(--ink-dim);font-size:13px;font-weight:700;padding:6px 2px;text-align:left}
+.wl-two{display:grid;grid-template-columns:1.5fr 1fr;gap:10px}
+.wl-totalprev{display:flex;justify-content:space-between;align-items:center;background:var(--surface-2);border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600;color:var(--ink-dim)}
+.wl-totalprev b{color:var(--ink);font-family:var(--font-display);font-size:16px}
+.wl-linkrow{display:flex;gap:8px;align-items:center}
+.wl-linkrow input{flex:1;min-width:0}
+.wl-x{flex:0 0 auto;width:40px;height:40px;border-radius:11px;border:1px solid var(--border);background:var(--surface);color:var(--ink-dim);font-size:14px}
+.field textarea{
+  border:1px solid var(--border);background:var(--surface);color:var(--ink);font-family:inherit;line-height:1.5;
+  border-radius:11px;padding:10px 12px;font-size:14px;width:100%;min-height:92px;resize:vertical;transition:border-color .2s ease;
+}
+.field textarea:focus{outline:2px solid var(--pc-accent, var(--accent));outline-offset:1px}
+.sw{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:700;cursor:pointer;position:relative}
+.sw input{position:absolute;opacity:0;pointer-events:none}
+.sw-t{width:48px;height:28px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);position:relative;transition:background .2s ease,border-color .2s ease;flex:0 0 auto}
+.sw-t::after{content:"";position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:var(--ink-dim);transition:transform .2s ease,background .2s ease}
+.sw input:checked + .sw-t{background:var(--accent);border-color:var(--accent)}
+.sw input:checked + .sw-t::after{transform:translateX(20px);background:var(--accent-ink)}
+.sw input:focus-visible + .sw-t{outline:2px solid var(--accent);outline-offset:2px}
+
 .disclaimer{font-size:11px;color:var(--ink-dim);line-height:1.55;background:var(--surface-2);border-radius:14px;padding:11px 13px}
 </style>
 </head>
@@ -584,6 +661,10 @@ section[data-tab][hidden]{display:none}
         <div id="peopleCards" style="display:flex;flex-direction:column;gap:14px"></div>
       </section>
 
+      <section data-tab="wishlist" id="tab-wishlist" hidden>
+        <div id="wlRoot" style="display:flex;flex-direction:column;gap:14px"></div>
+      </section>
+
     </div>
     <div class="sticky-fab-rail" id="fabRail">
       <button class="fab" id="fabBtn" onclick="handleFab()" aria-label="Tambah">+</button>
@@ -597,6 +678,7 @@ section[data-tab][hidden]{display:none}
       <button class="tab-btn" data-nav="pengeluaran" onclick="location.hash='#pengeluaran'"><span class="ic">🧾</span>Pengeluaran</button>
       <button class="tab-btn" data-nav="tracker" onclick="location.hash='#tracker'"><span class="ic">📈</span>Tracker</button>
       <button class="tab-btn" data-nav="setup" onclick="location.hash='#setup'"><span class="ic">⚙️</span>Setup</button>
+      <button class="tab-btn" data-nav="wishlist" onclick="location.hash='#wishlist'"><span class="ic">🛍️</span>Wishlist</button>
     </div>
   </nav>
 
@@ -662,6 +744,20 @@ section[data-tab][hidden]{display:none}
   var syncRunning = false, syncAgain = false;
 
   function clone(o){ return JSON.parse(JSON.stringify(o)); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function wlNorm(e){
+    var lv = Math.round(Number(e.level)); if(!(lv>=1 && lv<=5)) lv = 3;
+    var desk = Array.isArray(e.deskripsi) ? e.deskripsi : (e.deskripsi ? String(e.deskripsi).split('\n') : []);
+    var links = Array.isArray(e.links) ? e.links : (e.links ? [e.links] : []);
+    return {
+      id:e.id, nama:String(e.nama||'').slice(0,120), tipe:e.tipe==='ingin'?'ingin':'butuh',
+      harga:Math.max(0,Number(e.harga)||0), qty:Math.max(1,Math.round(Number(e.qty)||1)), level:lv,
+      links:links.map(function(x){ return String(x||'').trim(); }).filter(Boolean),
+      deskripsi:desk.map(function(x){ return String(x||'').trim(); }).filter(Boolean),
+      tglOn:!!e.tglOn && !!e.tanggal, tanggal:e.tanggal ? String(e.tanggal) : '',
+      bought:!!e.bought, ts:e.ts ? String(e.ts) : ''
+    };
+  }
   function pad2(n){ return (n<10?'0':'')+n; }
   /* tanggal LOKAL (bukan UTC) — biar jam 00:00–06:59 WIB gak mundur sehari */
   function localISO(d){ return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate()); }
@@ -678,7 +774,8 @@ section[data-tab][hidden]{display:none}
       scalarsAt: '',        // kapan saldoAwal/tanggalAwal/persen terakhir diedit (buat rebutan antar HP)
       deleted: {},          // {id: waktuHapus} — biar entri yang dihapus gak "hidup lagi" pas sync
       pemasukan: [],
-      pengeluaran: []
+      pengeluaran: [],
+      wishlist: []          // daftar kebutuhan & keinginan (lihat bagian Wishlist)
     };
   }
   function normPerson(p){
@@ -690,6 +787,7 @@ section[data-tab][hidden]{display:none}
     // buang data demo lama (seed*) biar gak nyusup balik ke Sheet
     n.pemasukan = (n.pemasukan||[]).filter(function(e){ return e && e.id && !/^seed/.test(e.id); });
     n.pengeluaran = (n.pengeluaran||[]).filter(function(e){ return e && e.id; });
+    n.wishlist = (n.wishlist||[]).filter(function(e){ return e && e.id; }).map(wlNorm);
     return n;
   }
 
@@ -710,6 +808,13 @@ section[data-tab][hidden]{display:none}
       b[k].concat(a[k]).forEach(function(e){ map[e.id] = e; });
       out[k] = Object.keys(map).map(function(id){ return map[id]; }).filter(function(e){ return !out.deleted[e.id]; });
     });
+    // wishlist: per item, yang ts-nya lebih baru menang (sama persis → ikut Sheet)
+    var wm = {};
+    b.wishlist.concat(a.wishlist).forEach(function(e){
+      var o = wm[e.id];
+      if(!o || (e.ts||'') > (o.ts||'')) wm[e.id] = e;
+    });
+    out.wishlist = Object.keys(wm).map(function(id){ return wm[id]; }).filter(function(e){ return !out.deleted[e.id]; });
     // persen per bulan: per bulan, yang ts-nya lebih baru menang
     out.persenBulan = {};
     var keys = {}; Object.keys(a.persenBulan).concat(Object.keys(b.persenBulan)).forEach(function(k){ keys[k]=1; });
@@ -725,7 +830,8 @@ section[data-tab][hidden]{display:none}
     p = normPerson(p);
     var ids = function(arr){ return arr.map(function(e){return e.id;}).sort().join(','); };
     var pb = Object.keys(p.persenBulan).sort().map(function(k){ return k+'@'+(p.persenBulan[k].ts||''); }).join(',');
-    return [ids(p.pemasukan), ids(p.pengeluaran), Object.keys(p.deleted).sort().join(','), p.scalarsAt, pb].join('|');
+    var wl = p.wishlist.map(function(e){ return e.id+'@'+(e.ts||''); }).sort().join(',');
+    return [ids(p.pemasukan), ids(p.pengeluaran), Object.keys(p.deleted).sort().join(','), p.scalarsAt, pb, wl].join('|');
   }
 
   function updateSyncBtn(){
@@ -925,7 +1031,7 @@ section[data-tab][hidden]{display:none}
   }
 
   /* ---------------- Router ---------------- */
-  var TABS = ['dashboard','pemasukan','pengeluaran','tracker','setup'];
+  var TABS = ['dashboard','pemasukan','pengeluaran','tracker','setup','wishlist'];
   /* Buka app → langsung di bulan berjalan (dijepit ke rentang Okt 2026 – Des 2027) */
   function defaultMonth(){
     var t = today(), r = monthRange(), k = ymKey(t.getFullYear(), t.getMonth());
@@ -996,7 +1102,7 @@ section[data-tab][hidden]{display:none}
     return '<div class="entry-row'+(isThisMonth?'':' muted')+'" data-id="'+p.id+'">'+
         '<div class="entry-main">'+
           '<div class="entry-date">'+d.getDate()+' '+MONTH_NAMES[d.getMonth()]+' '+d.getFullYear()+'</div>'+
-          '<div class="entry-note">'+(p.catatan||'—')+'</div>'+
+          '<div class="entry-note">'+esc(p.catatan||'—')+'</div>'+
         '</div>'+
         '<span class="chip'+(p.tipe==='rutin'?'':' nonrutin')+'">'+(p.tipe==='rutin'?'Rutin':'Non-Rutin')+'</span>'+
         '<div class="entry-amount pos tabular">'+rupiah(p.jumlah)+'</div>'+
@@ -1077,7 +1183,7 @@ section[data-tab][hidden]{display:none}
         '<div class="kategori-icon" style="width:30px;height:30px;font-size:16px">'+kat.icon+'</div>'+
         '<div class="entry-main">'+
           '<div class="entry-date">'+d.getDate()+' '+MONTH_NAMES[d.getMonth()]+'</div>'+
-          '<div class="entry-note">'+kat.nama+(p.catatan?' · '+p.catatan:'')+'</div>'+
+          '<div class="entry-note">'+kat.nama+(p.catatan?' · '+esc(p.catatan):'')+'</div>'+
         '</div>'+
         '<div class="entry-amount '+(lama?'':'neg ')+'tabular">'+(lama?'':'-')+rupiah(p.jumlah)+'</div>'+
         '<button class="row-del" data-del="'+p.id+'">🗑</button>'+
@@ -1713,6 +1819,7 @@ section[data-tab][hidden]{display:none}
     var tab = currentTab();
     if(tab==='pemasukan'){ openForm('pemasukan'); return; }
     if(tab==='pengeluaran'){ openForm('pengeluaran'); return; }
+    if(tab==='wishlist'){ openWishlistForm(); return; }
     openSheet(
       '<div class="sheet-title">Catat apa?</div>'+
       '<div class="sheet-choice">'+
@@ -1720,6 +1827,302 @@ section[data-tab][hidden]{display:none}
         '<button onclick="closeSheet();openForm(\'pengeluaran\')"><span class="ic">🧾</span> Catat Pengeluaran</button>'+
       '</div>'
     );
+  };
+
+  /* ---------------- Wishlist ---------------- */
+  var WL_LEVELS = [
+    {id:1, ic:'🚨', nama:'Gak Bisa Nawar'},
+    {id:2, ic:'⭐', nama:'Penting Sih'},
+    {id:3, ic:'🙂', nama:'Lumayan Lah'},
+    {id:4, ic:'🍃', nama:'Kalo Ada Rezeki'},
+    {id:5, ic:'😈', nama:'Godaan Setan'}
+  ];
+  var WL_KIND = {
+    butuh:{nama:'Kebutuhan', ic:'🛒', kat:'kebutuhan'},
+    ingin:{nama:'Keinginan', ic:'🎉', kat:'keinginan'}
+  };
+  var wlFilter = 'semua', wlOpen = {}, wlShowBought = false;
+
+  function nb(t){ return '<span style="white-space:nowrap">'+t+'</span>'; }
+  function wlTotal(it){ return it.harga * it.qty; }
+  /* bulan yang dipakai buat ngitung: tanggal rencana kalau diaktifin, kalau nggak ya bulan ini */
+  function wlMonth(it){
+    if(it.tglOn && it.tanggal){ var d = parseDate(it.tanggal); return {y:d.getFullYear(), m:d.getMonth()}; }
+    var t = today(); return {y:t.getFullYear(), m:t.getMonth()};
+  }
+  /* Dana dasar bulan itu. Bulan depan belum ada pemasukan tercatat → pakai pemasukan rutin bulan terakhir yang ada (perkiraan) */
+  function wlDasar(y,m){
+    var t = today(), curKey = ymKey(t.getFullYear(), t.getMonth());
+    if(ymKey(y,m) <= curKey) return {v:dasarAlokasi(y,m), est:false};
+    var rutin = pemasukanBulan(y,m);
+    if(rutin <= 0){
+      var yy = t.getFullYear(), mm = t.getMonth();
+      for(var i=0;i<24;i++){ var r = pemasukanBulan(yy,mm); if(r>0){ rutin = r; break; } mm--; if(mm<0){ mm=11; yy--; } }
+    }
+    return {v:Math.max(0, kasAwalBulan(y,m) + rutin), est:true};
+  }
+  function wlVerdict(it){
+    var k = WL_KIND[it.tipe], mo = wlMonth(it);
+    var persen = persenFor(activeData(),mo.y,mo.m).p[k.kat] || 0;
+    var da = wlDasar(mo.y,mo.m), target = da.v*persen/100;
+    var after = pengeluaranBulan(mo.y,mo.m,k.kat) + wlTotal(it);
+    var pct = target>0 ? after/target*100 : 999;
+    return {st:statusPakai(pct), sisa:target-after, est:da.est, mo:mo, k:k, noTarget:target<=0};
+  }
+  function wlSummary(){
+    var t = today(), y = t.getFullYear(), m = t.getMonth(), out = {};
+    var open = activeData().wishlist.filter(function(it){ return !it.bought; });
+    ['butuh','ingin'].forEach(function(tp){
+      var k = WL_KIND[tp];
+      var plan = open.filter(function(it){ var mo = wlMonth(it); return it.tipe===tp && mo.y===y && mo.m===m; })
+                     .reduce(function(s,it){ return s+wlTotal(it); },0);
+      var target = alokasiKategori(k.kat,y,m), used = pengeluaranBulan(y,m,k.kat), after = used+plan;
+      out[tp] = {k:k, plan:plan, sisa:target-after, st: plan>0 ? statusPakai(target>0 ? after/target*100 : 999) : null};
+    });
+    return out;
+  }
+  function wlSafeUrl(raw){
+    var u = String(raw||'').trim(); if(!u) return '';
+    if(!/^[a-z][a-z0-9+.-]*:/i.test(u)) u = 'https://'+u;
+    try{ var x = new URL(u); return (x.protocol==='http:' || x.protocol==='https:') && x.hostname.indexOf('.')>0 ? x.href : ''; }catch(e){ return ''; }
+  }
+  function wlLinkLabel(href){
+    var h = ''; try{ h = new URL(href).hostname.replace(/^www\./,'').toLowerCase(); }catch(e){}
+    var map = [[/shopee|shope\.ee/,'Shopee'],[/tokopedia|tokped/,'Tokopedia'],[/tiktok/,'TikTok Shop'],[/lazada|lzd\.co/,'Lazada'],[/blibli/,'Blibli'],[/bukalapak/,'Bukalapak'],[/amazon|amzn/,'Amazon'],[/tokopedia/,'Tokopedia']];
+    for(var i=0;i<map.length;i++) if(map[i][0].test(h)) return map[i][1];
+    return h || 'Link';
+  }
+  function wlDateLabel(iso){ var d = parseDate(iso); return d.getDate()+' '+MONTH_NAMES[d.getMonth()]+' '+d.getFullYear(); }
+
+  function wlItemHTML(it){
+    var done = it.bought, open = !!wlOpen[it.id], k = WL_KIND[it.tipe];
+    var v = done ? null : wlVerdict(it);
+    var meta = '<span>'+k.ic+' '+k.nama+'</span>';
+    if(it.qty>1) meta += '<span>'+it.qty+' × '+rupiah(it.harga)+'</span>';
+    if(it.tglOn && it.tanggal) meta += '<span class="'+(!done && it.tanggal<todayISO() ? 'late' : '')+'">📅 '+wlDateLabel(it.tanggal)+'</span>';
+    var h = '<div class="card wl-item'+(done?' done':'')+'" data-id="'+esc(it.id)+'"><div class="wl-row">'+
+      '<button class="wl-chk'+(done?' on':'')+'" data-wl="chk" data-id="'+esc(it.id)+'" aria-label="'+(done?'Batalkan tanda dibeli':'Tandai sudah dibeli')+'">✓</button>'+
+      '<button class="wl-main" data-wl="open" data-id="'+esc(it.id)+'" aria-expanded="'+open+'"><div class="wl-name">'+esc(it.nama)+'</div><div class="wl-meta">'+meta+'</div></button>'+
+      '<div class="wl-right"><div class="wl-price tabular">'+rupiah(wlTotal(it))+'</div>'+(v ? '<span class="badge '+v.st.tone+'">'+v.st.label+'</span>' : '')+'</div>'+
+    '</div>';
+    if(open){
+      h += '<div class="wl-more">';
+      if(v){
+        var txt = v.noTarget ? k.nama+' '+monthLabel(v.mo.y,v.mo.m)+' belum punya target dana'
+                : v.sisa<0 ? 'Setelah dibeli, '+k.nama+' '+monthLabel(v.mo.y,v.mo.m)+' lewat '+nb(rupiah(-v.sisa))
+                : 'Setelah dibeli, sisa '+k.nama+' '+monthLabel(v.mo.y,v.mo.m)+' '+nb(rupiah(v.sisa));
+        h += '<div class="wl-verdict '+v.st.tone+'">'+txt+(v.est?' · perkiraan':'')+'</div>';
+      }
+      if(it.deskripsi.length>1) h += '<div class="wl-desc"><ul>'+it.deskripsi.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('')+'</ul></div>';
+      else if(it.deskripsi.length===1) h += '<div class="wl-desc"><p>'+esc(it.deskripsi[0])+'</p></div>';
+      if(it.links.length) h += '<div class="wl-links">'+it.links.map(function(u){
+        return '<a class="wl-link" href="'+esc(u)+'" target="_blank" rel="noopener noreferrer"><span>'+esc(wlLinkLabel(u))+'</span><i>↗</i></a>';
+      }).join('')+'</div>';
+      h += '<div class="wl-actions">'+
+        '<button class="btn" data-wl="addlink" data-id="'+esc(it.id)+'">＋ Link</button>'+
+        '<button class="btn" data-wl="edit" data-id="'+esc(it.id)+'">Ubah</button>'+
+        '<button class="btn del" data-wl="del" data-id="'+esc(it.id)+'">Hapus</button>'+
+      '</div></div>';
+    }
+    return h+'</div>';
+  }
+
+  function renderWishlist(){
+    var root = document.getElementById('wlRoot'); if(!root) return;
+    var d = activeData(), meta = PEOPLE_META[state.activePerson];
+    var all = d.wishlist;
+    var openAll = all.filter(function(it){ return !it.bought; });
+    var boughtAll = all.filter(function(it){ return it.bought; });
+    var byFilter = function(it){ return wlFilter==='semua' || it.tipe===wlFilter; };
+    var t = today();
+
+    var html = '<div class="wl-head"><div class="wl-title">Wishlist '+esc(meta.nama)+'</div>'+
+      '<div class="hint">Kebutuhan dan keinginan, urut dari yang paling penting</div></div>';
+
+    if(!all.length){
+      html += '<div class="empty"><div class="ic">🛍️</div><b>Belum ada daftar</b><span>Ketuk + untuk nambah</span></div>';
+      root.innerHTML = html; return;
+    }
+
+    var sm = wlSummary();
+    var total = openAll.reduce(function(s,it){ return s+wlTotal(it); },0);
+    html += '<div class="card wl-sum"><div class="wl-sum-top"><div><div class="k">Total wishlist</div><div class="v tabular">'+rupiah(total)+'</div></div>'+
+      '<div class="wl-sum-n">'+openAll.length+' item</div></div>'+
+      '<div class="wl-sub">Rencana bulan ini · '+monthLabel(t.getFullYear(),t.getMonth())+'</div><div class="wl-cells">'+
+      ['butuh','ingin'].map(function(tp){
+        var c = sm[tp], over = c.sisa<0;
+        return '<div class="wl-cell"><div class="wl-cell-h"><span>'+c.k.nama+'</span>'+(c.st?'<span class="badge '+c.st.tone+'">'+c.st.label+'</span>':'')+'</div>'+
+          '<div class="wl-cell-v tabular">'+rupiah(c.plan)+'</div>'+
+          '<div class="wl-cell-s tabular'+(over?' lewat':'')+'">'+(over?'Lewat ':'Sisa ')+rupiah(Math.abs(c.sisa))+'</div></div>';
+      }).join('')+'</div></div>';
+
+    html += '<div class="seg" id="wlSeg">'+
+      [['semua','Semua'],['butuh','Kebutuhan'],['ingin','Keinginan']].map(function(x){
+        return '<button type="button"'+(wlFilter===x[0]?' class="active"':'')+' data-tipe="'+x[0]+'">'+x[1]+'</button>';
+      }).join('')+'</div>';
+
+    var shown = openAll.filter(byFilter);
+    if(!shown.length) html += '<div class="empty"><div class="ic">🙌</div><b>Tidak ada yang belum dibeli</b></div>';
+    WL_LEVELS.forEach(function(lv){
+      var items = shown.filter(function(it){ return it.level===lv.id; }).sort(function(a,b){
+        var da = a.tglOn ? a.tanggal : '9999', db = b.tglOn ? b.tanggal : '9999';
+        return da<db ? -1 : da>db ? 1 : (a.id<b.id ? -1 : 1);
+      });
+      if(!items.length) return;
+      html += '<div class="wl-group"><div class="wl-ghead"><span class="wl-gic">'+lv.ic+'</span><span class="wl-gname">'+lv.nama+'</span><span class="wl-gcount">'+items.length+'</span></div>'+
+        items.map(wlItemHTML).join('')+'</div>';
+    });
+
+    var bshown = boughtAll.filter(byFilter);
+    if(bshown.length){
+      html += '<div class="wl-group"><button class="wl-boughtbtn" data-wl="bought">Sudah dibeli ('+bshown.length+') '+(wlShowBought?'▴':'▾')+'</button>'+
+        (wlShowBought ? bshown.map(wlItemHTML).join('') : '')+'</div>';
+    }
+    root.innerHTML = html;
+    wireSeg(root, function(v){ wlFilter = v; renderWishlist(); });
+  }
+
+  function wlFind(id){ return activeData().wishlist.filter(function(x){ return x.id===id; })[0]; }
+  function wireWishlist(){
+    document.getElementById('wlRoot').addEventListener('click', function(ev){
+      var b = ev.target.closest('[data-wl]'); if(!b) return;
+      var act = b.getAttribute('data-wl'), id = b.getAttribute('data-id'), it = id ? wlFind(id) : null;
+      if(act==='bought'){ wlShowBought = !wlShowBought; renderWishlist(); return; }
+      if(!it) return;
+      if(act==='open'){ wlOpen[id] = !wlOpen[id]; renderWishlist(); }
+      else if(act==='chk'){ it.bought = !it.bought; it.ts = nowTs(); saveState(); renderWishlist(); }
+      else if(act==='edit'){ openWishlistForm(id); }
+      else if(act==='addlink'){ openWishlistLinkForm(id); }
+      else if(act==='del'){
+        var box = b.closest('.wl-actions');
+        box.innerHTML = '<span class="confirm-del">Hapus? <button class="btn" data-wl="delyes" data-id="'+esc(id)+'">Ya</button><button class="btn" data-wl="delno" data-id="'+esc(id)+'">Batal</button></span>';
+      }
+      else if(act==='delno'){ renderWishlist(); }
+      else if(act==='delyes'){
+        var dd = activeData();
+        dd.wishlist = dd.wishlist.filter(function(x){ return x.id!==id; });
+        dd.deleted[id] = nowTs();
+        saveState(); renderWishlist();
+      }
+    });
+  }
+
+  /* Deskripsi: tiap Enter bikin poin baru; kalau cuma 1 baris, tetap paragraf biasa */
+  function wlBullets(ta){
+    function enter(){
+      var v = ta.value, s = ta.selectionStart;
+      if(!v.trim()) return;
+      var ls = v.lastIndexOf('\n', s-1)+1, before = v.slice(ls, s);
+      if(before === '• '){            // Enter di poin kosong = keluar dari daftar
+        var from = ls>0 ? ls-1 : ls;
+        ta.setRangeText('', from, s, 'end'); return;
+      }
+      if(v.slice(0,2) !== '• '){ ta.setRangeText('• ', 0, 0, 'preserve'); s += 2; ta.setSelectionRange(s,s); }
+      ta.setRangeText('\n• ', s, ta.selectionEnd, 'end');
+    }
+    ta.addEventListener('keydown', function(ev){ if(ev.key==='Enter'){ ev.preventDefault(); enter(); } });
+    ta.addEventListener('beforeinput', function(ev){ if(ev.inputType==='insertLineBreak' || ev.inputType==='insertParagraph'){ ev.preventDefault(); enter(); } });
+    ta.addEventListener('blur', function(){ ta.value = wlDescText(wlDescLines(ta.value)); });
+  }
+  function wlDescLines(txt){
+    return String(txt||'').split('\n').map(function(l){ return l.replace(/^\s*[•\-*]\s*/,'').trim(); }).filter(Boolean);
+  }
+  function wlDescText(lines){
+    return lines.length>1 ? lines.map(function(l){ return '• '+l; }).join('\n') : (lines[0]||'');
+  }
+
+  function wlLinkRowHTML(val){
+    return '<div class="wl-linkrow"><input type="text" inputmode="url" autocapitalize="off" autocomplete="off" placeholder="Tempel link toko online" value="'+esc(val||'')+'">'+
+      '<button type="button" class="wl-x" aria-label="Hapus link">✕</button></div>';
+  }
+  function wlWireLinkRows(wrap){
+    wrap.addEventListener('click', function(ev){
+      var x = ev.target.closest('.wl-x'); if(!x) return;
+      var row = x.closest('.wl-linkrow');
+      if(wrap.querySelectorAll('.wl-linkrow').length>1) row.remove(); else row.querySelector('input').value = '';
+    });
+  }
+  /* ambil semua link dari form; balikin null kalau ada yang gak valid */
+  function wlCollectLinks(wrap){
+    var out = [], ok = true;
+    wrap.querySelectorAll('input').forEach(function(inp){
+      var raw = inp.value.trim(); inp.setCustomValidity('');
+      if(!raw) return;
+      var u = wlSafeUrl(raw);
+      if(!u){ inp.setCustomValidity('Link belum valid'); inp.reportValidity(); ok = false; return; }
+      if(out.indexOf(u)<0) out.push(u);
+    });
+    return ok ? out : null;
+  }
+
+  window.openWishlistForm = function(id){
+    var it = id ? wlFind(id) : null;
+    var f = it || {nama:'', tipe:'butuh', harga:0, qty:1, level:3, links:[], deskripsi:[], tglOn:false, tanggal:todayISO()};
+    var lvOpts = WL_LEVELS.map(function(l){ return '<option value="'+l.id+'"'+(l.id===f.level?' selected':'')+'>'+l.ic+' '+l.nama+'</option>'; }).join('');
+    var rows = (f.links.length ? f.links : ['']).map(wlLinkRowHTML).join('');
+    openSheet(
+      '<div class="sheet-title">'+(it?'Ubah wishlist':'Tambah wishlist')+'</div>'+
+      '<form id="formWl" novalidate style="display:flex;flex-direction:column;gap:12px">'+
+        '<div class="field"><label>Nama</label><input type="text" id="wlNama" maxlength="120" placeholder="mis. keyboard, member gym, servis motor" value="'+esc(f.nama)+'"></div>'+
+        '<div class="seg"><button type="button" class="'+(f.tipe==='butuh'?'active':'')+'" data-tipe="butuh">🛒 Kebutuhan</button><button type="button" class="'+(f.tipe==='ingin'?'active':'')+'" data-tipe="ingin">🎉 Keinginan</button></div>'+
+        '<div class="wl-two"><div class="field"><label>Harga satuan (Rp)</label><input type="number" id="wlHarga" min="0" step="1" inputmode="numeric" placeholder="0" value="'+(f.harga||'')+'"></div>'+
+        '<div class="field"><label>Jumlah</label><input type="number" id="wlQty" min="1" step="1" inputmode="numeric" value="'+f.qty+'"></div></div>'+
+        '<div class="wl-totalprev"><span>Total</span><b class="tabular" id="wlTot">Rp 0</b></div>'+
+        '<div class="field"><label>Prioritas</label><select id="wlLevel">'+lvOpts+'</select></div>'+
+        '<div class="field"><label>Link beli</label><div id="wlLinks" style="display:flex;flex-direction:column;gap:8px">'+rows+'</div>'+
+          '<button type="button" class="btn" id="wlAddLink">＋ Tambah link</button></div>'+
+        '<div class="field"><label>Deskripsi</label><textarea id="wlDesk" placeholder="Spek, warna, alasan, catatan">'+esc(wlDescText(f.deskripsi))+'</textarea></div>'+
+        '<label class="sw"><input type="checkbox" id="wlTglOn"'+(f.tglOn?' checked':'')+'><span class="sw-t"></span><span>Rencana tanggal beli</span></label>'+
+        '<div class="field" id="wlTglWrap"'+(f.tglOn?'':' hidden')+'><input type="date" id="wlTgl" value="'+esc(f.tanggal||todayISO())+'"></div>'+
+        '<button class="btn btn-primary btn-block" type="submit">Simpan</button>'+
+      '</form>'
+    );
+    var body = document.getElementById('sheetBody'), tipe = f.tipe;
+    wireSeg(body, function(v){ tipe = v; });
+    var harga = document.getElementById('wlHarga'), qty = document.getElementById('wlQty');
+    function tot(){ document.getElementById('wlTot').textContent = rupiah((Number(harga.value)||0) * Math.max(1,Math.round(Number(qty.value)||1))); }
+    harga.addEventListener('input', tot); qty.addEventListener('input', tot); tot();
+    var wrap = document.getElementById('wlLinks'); wlWireLinkRows(wrap);
+    document.getElementById('wlAddLink').addEventListener('click', function(){
+      wrap.insertAdjacentHTML('beforeend', wlLinkRowHTML('')); wrap.lastElementChild.querySelector('input').focus();
+    });
+    wlBullets(document.getElementById('wlDesk'));
+    var sw = document.getElementById('wlTglOn');
+    sw.addEventListener('change', function(){ document.getElementById('wlTglWrap').hidden = !sw.checked; });
+    document.getElementById('formWl').addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var nama = document.getElementById('wlNama').value.trim();
+      if(!nama){ var n = document.getElementById('wlNama'); n.setCustomValidity('Isi nama dulu'); n.reportValidity(); n.addEventListener('input', function(){ n.setCustomValidity(''); }, {once:true}); return; }
+      var links = wlCollectLinks(wrap); if(!links) return;
+      var data = {
+        nama:nama, tipe:tipe, harga:Math.max(0,Number(harga.value)||0), qty:Math.max(1,Math.round(Number(qty.value)||1)),
+        level:Number(document.getElementById('wlLevel').value), links:links,
+        deskripsi:wlDescLines(document.getElementById('wlDesk').value),
+        tglOn:sw.checked, tanggal:document.getElementById('wlTgl').value || todayISO(), ts:nowTs()
+      };
+      if(it) Object.assign(it, data);
+      else activeData().wishlist.push(Object.assign({id:uid(), bought:false}, data));
+      saveState(); closeSheet(); renderAll();
+    });
+  };
+  window.openWishlistLinkForm = function(id){
+    var it = wlFind(id); if(!it) return;
+    openSheet(
+      '<div class="sheet-title">Tambah link</div>'+
+      '<form id="formWlLink" novalidate style="display:flex;flex-direction:column;gap:12px">'+
+        '<div class="field"><label>'+esc(it.nama)+'</label><div id="wlLinks">'+wlLinkRowHTML('')+'</div></div>'+
+        '<button class="btn btn-primary btn-block" type="submit">Simpan</button>'+
+      '</form>'
+    );
+    var wrap = document.getElementById('wlLinks'); wlWireLinkRows(wrap);
+    wrap.querySelector('input').focus();
+    document.getElementById('formWlLink').addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var links = wlCollectLinks(wrap); if(!links) return;
+      if(!links.length){ closeSheet(); return; }
+      links.forEach(function(u){ if(it.links.indexOf(u)<0) it.links.push(u); });
+      it.ts = nowTs(); saveState(); closeSheet(); renderAll();
+    });
   };
 
   /* ---------------- Render all ---------------- */
@@ -1731,6 +2134,7 @@ section[data-tab][hidden]{display:none}
     else if(tab==='pengeluaran') renderPengeluaran();
     else if(tab==='tracker') renderTracker();
     else if(tab==='setup') renderSetup();
+    else if(tab==='wishlist') renderWishlist();
   }
 
   /* ---------------- Boot ---------------- */
@@ -1742,6 +2146,7 @@ section[data-tab][hidden]{display:none}
     applyPersonTheme();
     initLegends();
     wireCompare();
+    wireWishlist();
     if(!location.hash) location.hash = '#dashboard';
     router();
     updateSyncBtn();
