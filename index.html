@@ -502,10 +502,11 @@ section[data-tab][hidden]{display:none}
 .cmp-empty{font-size:12.5px;color:var(--ink-dim);text-align:center;padding:18px 8px}
 .chart-wrap svg{width:100%;height:auto;display:block}
 
-/* ---- Tab bar: 6 tab muat di HP kecil ---- */
-.tabbar-inner{padding-left:max(2px,env(safe-area-inset-left,0px));padding-right:max(2px,env(safe-area-inset-right,0px))}
-.tab-btn{min-width:0;font-size:10px;padding:9px 0 10px;white-space:nowrap;letter-spacing:-.1px}
-.tab-btn .ic{font-size:17px}
+/* ---- Tab bar: 5 tab, tombol lebih besar ---- */
+.tab-btn{min-width:0;font-size:11px;padding:10px 0 11px;white-space:nowrap;gap:4px}
+.tab-btn .ic{font-size:21px;line-height:1}
+.catseg button.active{background:var(--accent);color:var(--accent-ink);border-radius:9px}
+.catseg button{transition:background .2s ease,color .2s ease}
 
 /* ---- Wishlist ---- */
 #tab-wishlist [hidden],.field[hidden]{display:none!important}
@@ -579,6 +580,17 @@ section[data-tab][hidden]{display:none}
 .sw input:checked + .sw-t::after{transform:translateX(20px);background:var(--accent-ink)}
 .sw input:focus-visible + .sw-t{outline:2px solid var(--accent);outline-offset:2px}
 
+.wl-col{display:flex;flex-direction:column;gap:14px}
+@keyframes wlIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@keyframes wlFade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes wlPop{0%{transform:scale(.8)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+.wl-more.anim{animation:wlIn .26s cubic-bezier(.22,1,.36,1)}
+#wlBody.fade{animation:wlFade .24s cubic-bezier(.22,1,.36,1)}
+.wl-chk.pop{animation:wlPop .3s ease}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
 .disclaimer{font-size:11px;color:var(--ink-dim);line-height:1.55;background:var(--surface-2);border-radius:14px;padding:11px 13px}
 </style>
 </head>
@@ -624,6 +636,7 @@ section[data-tab][hidden]{display:none}
       </section>
 
       <section data-tab="pemasukan" id="tab-pemasukan" hidden>
+        <div class="seg catseg" role="tablist"><button type="button" data-cat="pemasukan" class="active" onclick="location.hash='#pemasukan'">Pemasukan</button><button type="button" data-cat="pengeluaran" onclick="location.hash='#pengeluaran'">Pengeluaran</button></div>
         <button class="btn btn-primary btn-block" onclick="openForm('pemasukan')">+ Catat Pemasukan</button>
         <div class="section-title">Bulan Ini</div>
         <div id="pemasukanListNow" style="display:flex;flex-direction:column;gap:8px"></div>
@@ -635,6 +648,7 @@ section[data-tab][hidden]{display:none}
       </section>
 
       <section data-tab="pengeluaran" id="tab-pengeluaran" hidden>
+        <div class="seg catseg" role="tablist"><button type="button" data-cat="pemasukan" onclick="location.hash='#pemasukan'">Pemasukan</button><button type="button" data-cat="pengeluaran" class="active" onclick="location.hash='#pengeluaran'">Pengeluaran</button></div>
         <div class="month-scroller" id="pengeluaranMonthScroller"></div>
         <button class="btn btn-primary btn-block" onclick="openForm('pengeluaran')">+ Catat Pengeluaran</button>
         <div id="saveBarPeng"></div>
@@ -674,8 +688,7 @@ section[data-tab][hidden]{display:none}
   <nav class="tabbar">
     <div class="tabbar-inner">
       <button class="tab-btn" data-nav="dashboard" onclick="location.hash='#dashboard'"><span class="ic">🏠</span>Dashboard</button>
-      <button class="tab-btn" data-nav="pemasukan" onclick="location.hash='#pemasukan'"><span class="ic">💰</span>Pemasukan</button>
-      <button class="tab-btn" data-nav="pengeluaran" onclick="location.hash='#pengeluaran'"><span class="ic">🧾</span>Pengeluaran</button>
+      <button class="tab-btn" data-nav="catatan" onclick="goCatatan()"><span class="ic">🧾</span>Catatan</button>
       <button class="tab-btn" data-nav="tracker" onclick="location.hash='#tracker'"><span class="ic">📈</span>Tracker</button>
       <button class="tab-btn" data-nav="setup" onclick="location.hash='#setup'"><span class="ic">⚙️</span>Setup</button>
       <button class="tab-btn" data-nav="wishlist" onclick="location.hash='#wishlist'"><span class="ic">🛍️</span>Wishlist</button>
@@ -1042,6 +1055,8 @@ section[data-tab][hidden]{display:none}
   var pengeluaranSelectedMonth = defaultMonth();
   var bootMonthKey = ymKey(today().getFullYear(), today().getMonth());
 
+  var lastCatatan = 'pengeluaran';
+  window.goCatatan = function(){ location.hash = '#'+lastCatatan; };
   function currentTab(){
     var h = location.hash.replace('#','');
     return TABS.indexOf(h)>=0 ? h : 'dashboard';
@@ -1053,8 +1068,10 @@ section[data-tab][hidden]{display:none}
       sec.hidden = (t!==tab);
       sec.classList.remove('in');
     });
+    var navKey = (tab==='pemasukan' || tab==='pengeluaran') ? 'catatan' : tab;
+    if(navKey==='catatan') lastCatatan = tab;
     document.querySelectorAll('.tab-btn').forEach(function(btn){
-      btn.classList.toggle('active', btn.getAttribute('data-nav')===tab);
+      btn.classList.toggle('active', btn.getAttribute('data-nav')===navKey);
     });
     document.getElementById('fabRail').style.display = (tab==='setup') ? 'none' : 'flex';
     renderAll();
@@ -1745,24 +1762,33 @@ section[data-tab][hidden]{display:none}
 
   function wireSeg(container, onChange){
     var seg = container.querySelector('.seg');
-    if(!seg) return;
+    if(!seg || seg._wired) return;
+    seg._wired = true;
     var highlight = document.createElement('div');
     highlight.className = 'seg-highlight';
     seg.insertBefore(highlight, seg.firstChild);
     var btns = Array.prototype.slice.call(seg.querySelectorAll('button[data-tipe]'));
-    function place(btn){
+    /* animate=false: langsung taruh di posisinya tanpa meluncur dari kiri (muncul pertama / resize) */
+    function place(btn, animate){
+      if(!btn || !btn.offsetWidth) return;
+      if(!animate) highlight.style.transition = 'none';
       highlight.style.width = btn.offsetWidth+'px';
       highlight.style.transform = 'translateX('+btn.offsetLeft+'px)';
+      if(!animate){ void highlight.offsetWidth; highlight.style.transition = ''; }
     }
+    function current(){ return seg.querySelector('button.active'); }
     btns.forEach(function(b){
       b.addEventListener('click', function(){
+        if(b.classList.contains('active')) return;
         btns.forEach(function(x){ x.classList.remove('active'); });
         b.classList.add('active');
-        place(b);
+        place(b, true);
         onChange(b.getAttribute('data-tipe'));
       });
     });
-    requestAnimationFrame(function(){ place(seg.querySelector('button.active')); });
+    place(current(), false);
+    requestAnimationFrame(function(){ place(current(), false); });
+    if(window.ResizeObserver) new ResizeObserver(function(){ place(current(), false); }).observe(seg);
   }
 
   window.openForm = function(kind){
@@ -1841,7 +1867,7 @@ section[data-tab][hidden]{display:none}
     butuh:{nama:'Kebutuhan', ic:'🛒', kat:'kebutuhan'},
     ingin:{nama:'Keinginan', ic:'🎉', kat:'keinginan'}
   };
-  var wlFilter = 'semua', wlOpen = {}, wlShowBought = false;
+  var wlFilter = 'semua', wlOpen = {}, wlShowBought = false, wlFade = false, wlAnimId = '', wlPopId = '';
 
   function nb(t){ return '<span style="white-space:nowrap">'+t+'</span>'; }
   function wlTotal(it){ return it.harga * it.qty; }
@@ -1901,12 +1927,12 @@ section[data-tab][hidden]{display:none}
     if(it.qty>1) meta += '<span>'+it.qty+' × '+rupiah(it.harga)+'</span>';
     if(it.tglOn && it.tanggal) meta += '<span class="'+(!done && it.tanggal<todayISO() ? 'late' : '')+'">📅 '+wlDateLabel(it.tanggal)+'</span>';
     var h = '<div class="card wl-item'+(done?' done':'')+'" data-id="'+esc(it.id)+'"><div class="wl-row">'+
-      '<button class="wl-chk'+(done?' on':'')+'" data-wl="chk" data-id="'+esc(it.id)+'" aria-label="'+(done?'Batalkan tanda dibeli':'Tandai sudah dibeli')+'">✓</button>'+
+      '<button class="wl-chk'+(done?' on':'')+(wlPopId===it.id?' pop':'')+'" data-wl="chk" data-id="'+esc(it.id)+'" aria-label="'+(done?'Batalkan tanda dibeli':'Tandai sudah dibeli')+'">✓</button>'+
       '<button class="wl-main" data-wl="open" data-id="'+esc(it.id)+'" aria-expanded="'+open+'"><div class="wl-name">'+esc(it.nama)+'</div><div class="wl-meta">'+meta+'</div></button>'+
       '<div class="wl-right"><div class="wl-price tabular">'+rupiah(wlTotal(it))+'</div>'+(v ? '<span class="badge '+v.st.tone+'">'+v.st.label+'</span>' : '')+'</div>'+
     '</div>';
     if(open){
-      h += '<div class="wl-more">';
+      h += '<div class="wl-more'+(wlAnimId===it.id?' anim':'')+'">';
       if(v){
         var txt = v.noTarget ? k.nama+' '+monthLabel(v.mo.y,v.mo.m)+' belum punya target dana'
                 : v.sisa<0 ? 'Setelah dibeli, '+k.nama+' '+monthLabel(v.mo.y,v.mo.m)+' lewat '+nb(rupiah(-v.sisa))
@@ -1927,26 +1953,39 @@ section[data-tab][hidden]{display:none}
     return h+'</div>';
   }
 
+  function wlShell(root){
+    if(root.querySelector('#wlBody')) return;
+    root.innerHTML = '<div id="wlTop" class="wl-col"></div>'+
+      '<div class="seg" id="wlSeg" hidden>'+[['semua','Semua'],['butuh','Kebutuhan'],['ingin','Keinginan']].map(function(x){
+        return '<button type="button"'+(wlFilter===x[0]?' class="active"':'')+' data-tipe="'+x[0]+'">'+x[1]+'</button>';
+      }).join('')+'</div>'+
+      '<div id="wlBody" class="wl-col"></div>';
+    wireSeg(root, function(v){ wlFilter = v; wlFade = true; renderWishlist(); });
+  }
   function renderWishlist(){
     var root = document.getElementById('wlRoot'); if(!root) return;
+    wlShell(root);
     var d = activeData(), meta = PEOPLE_META[state.activePerson];
     var all = d.wishlist;
     var openAll = all.filter(function(it){ return !it.bought; });
     var boughtAll = all.filter(function(it){ return it.bought; });
     var byFilter = function(it){ return wlFilter==='semua' || it.tipe===wlFilter; };
     var t = today();
+    var top = document.getElementById('wlTop'), body = document.getElementById('wlBody'), seg = document.getElementById('wlSeg');
 
-    var html = '<div class="wl-head"><div class="wl-title">Wishlist '+esc(meta.nama)+'</div>'+
+    var head = '<div class="wl-head"><div class="wl-title">Wishlist '+esc(meta.nama)+'</div>'+
       '<div class="hint">Kebutuhan dan keinginan, urut dari yang paling penting</div></div>';
+    seg.hidden = !all.length;
 
     if(!all.length){
-      html += '<div class="empty"><div class="ic">🛍️</div><b>Belum ada daftar</b><span>Ketuk + untuk nambah</span></div>';
-      root.innerHTML = html; return;
+      top.innerHTML = head;
+      body.innerHTML = '<div class="empty"><div class="ic">🛍️</div><b>Belum ada daftar</b><span>Ketuk + untuk nambah</span></div>';
+      return;
     }
 
     var sm = wlSummary();
     var total = openAll.reduce(function(s,it){ return s+wlTotal(it); },0);
-    html += '<div class="card wl-sum"><div class="wl-sum-top"><div><div class="k">Total wishlist</div><div class="v tabular">'+rupiah(total)+'</div></div>'+
+    top.innerHTML = head+'<div class="card wl-sum"><div class="wl-sum-top"><div><div class="k">Total wishlist</div><div class="v tabular">'+rupiah(total)+'</div></div>'+
       '<div class="wl-sum-n">'+openAll.length+' item</div></div>'+
       '<div class="wl-sub">Rencana bulan ini · '+monthLabel(t.getFullYear(),t.getMonth())+'</div><div class="wl-cells">'+
       ['butuh','ingin'].map(function(tp){
@@ -1956,11 +1995,7 @@ section[data-tab][hidden]{display:none}
           '<div class="wl-cell-s tabular'+(over?' lewat':'')+'">'+(over?'Lewat ':'Sisa ')+rupiah(Math.abs(c.sisa))+'</div></div>';
       }).join('')+'</div></div>';
 
-    html += '<div class="seg" id="wlSeg">'+
-      [['semua','Semua'],['butuh','Kebutuhan'],['ingin','Keinginan']].map(function(x){
-        return '<button type="button"'+(wlFilter===x[0]?' class="active"':'')+' data-tipe="'+x[0]+'">'+x[1]+'</button>';
-      }).join('')+'</div>';
-
+    var html = '';
     var shown = openAll.filter(byFilter);
     if(!shown.length) html += '<div class="empty"><div class="ic">🙌</div><b>Tidak ada yang belum dibeli</b></div>';
     WL_LEVELS.forEach(function(lv){
@@ -1978,8 +2013,10 @@ section[data-tab][hidden]{display:none}
       html += '<div class="wl-group"><button class="wl-boughtbtn" data-wl="bought">Sudah dibeli ('+bshown.length+') '+(wlShowBought?'▴':'▾')+'</button>'+
         (wlShowBought ? bshown.map(wlItemHTML).join('') : '')+'</div>';
     }
-    root.innerHTML = html;
-    wireSeg(root, function(v){ wlFilter = v; renderWishlist(); });
+    body.innerHTML = html;
+    /* animasi cuma sekali, pas user yang memicu (ganti filter / buka kartu / centang), bukan tiap sync */
+    if(wlFade){ wlFade = false; body.classList.remove('fade'); void body.offsetWidth; body.classList.add('fade'); }
+    wlAnimId = ''; wlPopId = '';
   }
 
   function wlFind(id){ return activeData().wishlist.filter(function(x){ return x.id===id; })[0]; }
@@ -1989,8 +2026,8 @@ section[data-tab][hidden]{display:none}
       var act = b.getAttribute('data-wl'), id = b.getAttribute('data-id'), it = id ? wlFind(id) : null;
       if(act==='bought'){ wlShowBought = !wlShowBought; renderWishlist(); return; }
       if(!it) return;
-      if(act==='open'){ wlOpen[id] = !wlOpen[id]; renderWishlist(); }
-      else if(act==='chk'){ it.bought = !it.bought; it.ts = nowTs(); saveState(); renderWishlist(); }
+      if(act==='open'){ wlOpen[id] = !wlOpen[id]; wlAnimId = wlOpen[id] ? id : ''; renderWishlist(); }
+      else if(act==='chk'){ it.bought = !it.bought; it.ts = nowTs(); wlPopId = id; saveState(); renderWishlist(); }
       else if(act==='edit'){ openWishlistForm(id); }
       else if(act==='addlink'){ openWishlistLinkForm(id); }
       else if(act==='del'){
