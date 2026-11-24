@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Canduy Finance</title>
 <link rel="apple-touch-icon" href="thumbnail.png">
 <link rel="icon" href="thumbnail.png">
@@ -84,6 +84,8 @@
 
 *{box-sizing:border-box}
 html,body{height:100%}
+/* tanpa zoom: double-tap dan pinch dimatikan, scroll tetap normal */
+html,body,*{touch-action:manipulation}
 body{background:var(--bg);color:var(--ink);font-family:var(--font-body);margin:0}
 .app{height:100%;display:flex;flex-direction:column;min-width:0;background:var(--bg);color:var(--ink);transition:background .3s ease,color .3s ease}
 h1,h2,h3{font-family:var(--font-display);margin:0;text-wrap:balance}
@@ -2184,6 +2186,7 @@ section[data-tab][hidden]{display:none}
     initLegends();
     wireCompare();
     wireWishlist();
+    ['gesturestart','gesturechange','gestureend'].forEach(function(n){ document.addEventListener(n, function(e){ e.preventDefault(); }, {passive:false}); });
     if(!location.hash) location.hash = '#dashboard';
     router();
     updateSyncBtn();
